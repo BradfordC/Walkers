@@ -18,7 +18,7 @@ class Simulator(Framework):
     def Step(self, settings):
         super(Simulator, self).Step(settings)
 
-        force = cos(self.stepCount / (self.secondsPerTrial * 60) * 2 * b2_pi) * 2
+        force = - cos(self.stepCount / (self.secondsPerTrial * 60) * 2 * b2_pi) * 2
         self.walker.setJointForces((force,) * 11)
 
         if (self.stepCount % (self.secondsPerTrial * 60)) == 0:

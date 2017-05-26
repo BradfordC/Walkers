@@ -45,23 +45,26 @@ class Walker:
         #Leg 1
         self.__addBodyPart(world, (.5, 1.5), (0, 5.5), Walker.BODY_LEG1_UPPER, Walker.BODY_TORSO, Walker.JOINT_LEG1_HIP, (-45, 90))
         self.__addBodyPart(world, (.5, 1.5), (0, 2.5), Walker.BODY_LEG1_LOWER, Walker.BODY_LEG1_UPPER, Walker.JOINT_LEG1_KNEE, (-90, 0))
-        self.__addBodyPart(world, (1, .25), (0.5, .75), Walker.BODY_LEG1_FOOT, Walker.BODY_LEG1_LOWER, Walker.JOINT_LEG1_ANKLE, (-45, 45))
+        self.__addBodyPart(world, (1, .25), (0.5, .75), Walker.BODY_LEG1_FOOT, Walker.BODY_LEG1_LOWER, Walker.JOINT_LEG1_ANKLE, (-45, 45), (-.5, 0))
         #Leg 2
         self.__addBodyPart(world, (.5, 1.5), (0, 5.5), Walker.BODY_LEG2_UPPER, Walker.BODY_TORSO, Walker.JOINT_LEG2_HIP, (-45, 90))
         self.__addBodyPart(world, (.5, 1.5), (0, 2.5), Walker.BODY_LEG2_LOWER, Walker.BODY_LEG2_UPPER, Walker.JOINT_LEG2_KNEE, (-90, 0))
-        self.__addBodyPart(world, (1, .25), (0.5, .75), Walker.BODY_LEG2_FOOT, Walker.BODY_LEG2_LOWER, Walker.JOINT_LEG2_ANKLE, (-45, 45))
+        self.__addBodyPart(world, (1, .25), (0.5, .75), Walker.BODY_LEG2_FOOT, Walker.BODY_LEG2_LOWER, Walker.JOINT_LEG2_ANKLE, (-45, 45), (-.5, 0))
 
-    def __addBodyPart(self, world, box, position, bodyIndex, connectedBodyIndex = -1, jointIndex = -1, jointAngles = (0,0)):
+        self.resetPosition()
+
+    def __addBodyPart(self, world, box, position, bodyIndex, connectedBodyIndex = -1, jointIndex = -1, jointLimits = (0, 0), jointOffset=(0,0)):
         self.positionList[bodyIndex] = position
         body = world.CreateDynamicBody(position=position)
         body.CreatePolygonFixture(box=box, density=1, friction=0.3, filter=b2Filter(groupIndex = -1))
         self.bodyList[bodyIndex] = body
         if(connectedBodyIndex >= 0):
+            #Connect the joint at the top middle of this object, plus any offset
             joint = world.CreateRevoluteJoint(bodyA=self.bodyList[connectedBodyIndex],
                                               bodyB=body,
-                                              anchor=(position[0], position[1] + box[1]),
-                                              lowerAngle = jointAngles[0] / 180 * b2_pi, #Convert degrees to radians
-                                              upperAngle = jointAngles[1] / 180 * b2_pi, #Convert degrees to radians
+                                              anchor=(position[0] + jointOffset[0], position[1] + box[1] + jointOffset[1]),
+                                              lowerAngle =jointLimits[0] / 180 * b2_pi,  #Convert degrees to radians
+                                              upperAngle =jointLimits[1] / 180 * b2_pi,  #Convert degrees to radians
                                               enableLimit = True,
                                               maxMotorTorque = 100.0,
                                               enableMotor = True)
@@ -89,3 +92,10 @@ class Walker:
             body.transform = [self.positionList[i], 0]
             body.linearVelocity = (0, 0)
             body.angularVelocity = 0
+
+        #Move the arms and legs slightly so that they diverge from the start
+        self.bodyList[Walker.BODY_LEG1_UPPER].angularVelocity = 5
+        self.bodyList[Walker.BODY_LEG2_UPPER].angularVelocity = -5
+        self.bodyList[Walker.BODY_ARM1_UPPER].angularVelocity = 5
+        self.bodyList[Walker.BODY_ARM2_UPPER].angularVelocity = -5
+
