@@ -2,6 +2,7 @@ from .framework import (Framework, main)
 from math import cos
 from Box2D import *
 from Walker import Walker
+from Networks import Network
 
 
 class Simulator(Framework):
@@ -15,15 +16,24 @@ class Simulator(Framework):
         self.walker = Walker(self.world)
         self.secondsPerTrial = 5
 
+        jointCount = len(self.walker.jointList)
+        self.network = Network.Network(jointCount, jointCount, [jointCount])
+
+
+
     def Step(self, settings):
         super(Simulator, self).Step(settings)
 
-        force = - cos(self.stepCount / (self.secondsPerTrial * 60) * 2 * b2_pi) * 2
-        self.walker.setJointForces((force,) * 11)
+        output = self.network.Feedforwad(self.walker.getJointAngles())
+        forces = [(i - .5)*10 for i in output]
+        self.walker.setJointForces(forces)
 
         if (self.stepCount % (self.secondsPerTrial * 60)) == 0:
             print(self.walker.getTorsoPosition())
             self.walker.resetPosition()
+            jointCount = len(self.walker.jointList)
+            self.network = Network.Network(jointCount, jointCount, [jointCount])
+            print(forces)
 
 
 if __name__ == "__main__":
