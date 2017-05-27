@@ -1,6 +1,8 @@
 from Networks import Network
 from Evolution import Agent
 
+import random
+
 class Population:
     def __init__(self, size, baseNetwork):
         self.agentList = []
@@ -21,4 +23,10 @@ class Population:
             if(highestFitness < agent.fitness):
                 highestFitness = agent.fitness
         return highestFitness
+
+    def mutateAll(self, mutationChance):
+        for agent in self.agentList:
+            if(random.random() < mutationChance):
+                agent.mutate()
+
 

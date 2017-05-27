@@ -14,8 +14,8 @@ class Simulator(Framework):
         #Create the ground
         self.world.CreateStaticBody(position=(0, -10), shapes=b2PolygonShape(box=(50, 10)))
 
-        self.secondsPerTrial = 5
-        self.walkerCount = 5
+        self.secondsPerTrial = 7
+        self.walkerCount = 10
 
         #Make some walkers
         self.walkerList = []
@@ -42,10 +42,12 @@ class Simulator(Framework):
         if (self.stepCount % (self.secondsPerTrial * 60)) == 0:
             for i in range(self.walkerCount):
                 walker = self.walkerList[i]
-                self.population.agentList[i].fitness = walker.getTorsoPosition;
+                self.population.agentList[i].fitness = walker.getTorsoPosition();
                 walker.resetPosition()
 
+            print(self.population.getHighestFitness())
             self.population = self.population.makeNextPopulation()
+            self.population.mutateAll(.5)
 
 
 
