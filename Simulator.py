@@ -14,8 +14,8 @@ class Simulator(Framework):
         #Create the ground
         self.world.CreateStaticBody(position=(0, -10), shapes=b2PolygonShape(box=(50, 10)))
 
-        self.secondsPerTrial = 7
-        self.walkerCount = 10
+        self.secondsPerTrial = 10
+        self.walkerCount = 20
 
         #Make some walkers
         self.walkerList = []
