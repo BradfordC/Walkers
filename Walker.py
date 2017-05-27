@@ -40,7 +40,7 @@ class Walker:
     def __addBodyPart(self, world, box, position, connectedBodyIndex=-1, jointLimits = (0, 0), jointOffset=(0,0)):
         self.positionList.append(position)
         body = world.CreateDynamicBody(position=position)
-        body.CreatePolygonFixture(box=box, density=1, friction=0.3, filter=b2Filter(groupIndex = -1))
+        body.CreatePolygonFixture(box=box, density=1, friction=.9, filter=b2Filter(groupIndex = -1))
         self.bodyList.append(body)
         if(connectedBodyIndex >= 0):
             #Connect the joint at the top middle of this object, plus any offset
@@ -50,7 +50,7 @@ class Walker:
                                               lowerAngle =jointLimits[0] / 180 * b2_pi,  #Convert degrees to radians
                                               upperAngle =jointLimits[1] / 180 * b2_pi,  #Convert degrees to radians
                                               enableLimit = True,
-                                              maxMotorTorque = 100.0,
+                                              maxMotorTorque = 500.0,
                                               enableMotor = True)
             self.jointList.append(joint)
 
@@ -68,11 +68,15 @@ class Walker:
             print("ERROR: Size mismatch in setting joint forces.")
 
     def getTorsoPosition(self):
-        return self.bodyList[self.torsoIndex].position[0]
+        return self.bodyList[self.torsoIndex].position
+
+    def getTorsoAngle(self):
+        return self.bodyList[self.torsoIndex].angle
 
     def resetPosition(self):
         for i in range(len(self.bodyList)):
             body = self.bodyList[i]
+
             body.transform = [self.positionList[i], 0]
             body.linearVelocity = (0, 0)
             body.angularVelocity = 0

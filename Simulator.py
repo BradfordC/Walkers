@@ -14,8 +14,8 @@ class Simulator(Framework):
         #Create the ground
         self.world.CreateStaticBody(position=(0, -10), shapes=b2PolygonShape(box=(50, 10)))
 
-        self.secondsPerTrial = 5
-        self.walkerCount = 40
+        self.secondsPerTrial = 7
+        self.walkerCount = 50
 
         #Make some walkers
         self.walkerList = []
@@ -24,7 +24,7 @@ class Simulator(Framework):
 
         #Make a population of agents
         jointCount = len(self.walkerList[0].jointList)
-        sampleNetwork = Network(jointCount, jointCount, [jointCount])
+        sampleNetwork = Network(jointCount + 2, jointCount, [jointCount])
         self.population = Population(self.walkerCount, sampleNetwork)
 
     def Step(self, settings):
@@ -33,16 +33,20 @@ class Simulator(Framework):
         #Advance all walkers
         for i in range(self.walkerCount):
             walker = self.walkerList[i]
+            #Angle and height of torso
+            input = [walker.getTorsoAngle(), walker.getTorsoPosition()[1]]
+            input.extend(walker.getJointAngles())
+
             network = self.population.agentList[i].network
-            networkOutput = network.Feedforwad(walker.getJointAngles())
-            jointForces = [(i - .5)*10 for i in networkOutput]
+            networkOutput = network.Feedforwad(input)
+            jointForces = [(i - .5)*15 for i in networkOutput]
             walker.setJointForces(jointForces)
 
         #Deal with the end of a trial
         if (self.stepCount % (self.secondsPerTrial * 60)) == 0:
             for i in range(self.walkerCount):
                 walker = self.walkerList[i]
-                self.population.agentList[i].fitness = walker.getTorsoPosition();
+                self.population.agentList[i].fitness = walker.getTorsoPosition()[0] + walker.getTorsoPosition()[1];
                 walker.resetPosition()
 
             print(self.population.getHighestFitness())
