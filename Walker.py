@@ -2,62 +2,46 @@ from Box2D import *
 
 
 class Walker:
-    BODY_HEAD = 0
-    BODY_TORSO = 1
-    BODY_ARM1_UPPER = 2
-    BODY_ARM1_LOWER = 3
-    BODY_ARM2_UPPER = 4
-    BODY_ARM2_LOWER = 5
-    BODY_LEG1_UPPER = 6
-    BODY_LEG1_LOWER = 7
-    BODY_LEG1_FOOT = 8
-    BODY_LEG2_UPPER = 9
-    BODY_LEG2_LOWER = 10
-    BODY_LEG2_FOOT = 11
+    def __init__(self, world, isSimple=False):
+        self.bodyList = []
+        self.positionList = []
+        self.jointList = []
 
-    JOINT_NECK = 0
-    JOINT_ARM1_SHOULDER = 1
-    JOINT_ARM1_ELBOW = 2
-    JOINT_ARM2_SHOULDER = 3
-    JOINT_ARM2_ELBOW = 4
-    JOINT_LEG1_HIP = 5
-    JOINT_LEG1_KNEE = 6
-    JOINT_LEG1_ANKLE = 7
-    JOINT_LEG2_HIP = 8
-    JOINT_LEG2_KNEE = 9
-    JOINT_LEG2_ANKLE = 10
+        #Keep track of the torso index, to attach body parts to it and to be able to track its position during the test
+        self.torsoIndex = -1
 
-    def __init__(self, world):
-        self.bodyList = [None] * 12
-        self.positionList = [None] * 12
-        self.jointList = [None] * 11
-
-        #Head
-        self.__addBodyPart(world, (1.0,1.0), (0, 13), Walker.BODY_HEAD)
-        #Torso
-        self.__addBodyPart(world, (1, 2.5), (0, 9.5), Walker.BODY_TORSO, Walker.BODY_HEAD, Walker.JOINT_NECK, (-45, 45))
-        #Arm 1
-        self.__addBodyPart(world, (.35, 1.25), (0, 10.75), Walker.BODY_ARM1_UPPER, Walker.BODY_TORSO, Walker.JOINT_ARM1_SHOULDER, (-90, 90))
-        self.__addBodyPart(world, (.35, 1.25), (0, 8.25), Walker.BODY_ARM1_LOWER, Walker.BODY_ARM1_UPPER, Walker.JOINT_ARM1_ELBOW, (0, 90))
-        #Arm 2
-        self.__addBodyPart(world, (.35, 1.25), (0, 10.75), Walker.BODY_ARM2_UPPER, Walker.BODY_TORSO, Walker.JOINT_ARM2_SHOULDER, (-90, 90))
-        self.__addBodyPart(world, (.35, 1.25), (0, 8.25), Walker.BODY_ARM2_LOWER, Walker.BODY_ARM2_UPPER, Walker.JOINT_ARM2_ELBOW, (0, 90))
+        if(isSimple):
+            #No head or arms, just the torso
+            self.__addBodyPart(world, (1, 2.5), (0, 9.5))
+            torsoIndex = len(self.bodyList) - 1
+        else:
+            #Head
+            self.__addBodyPart(world, (1.0,1.0), (0, 13))
+            #Torso
+            self.__addBodyPart(world, (1, 2.5), (0, 9.5), len(self.bodyList) - 1, (-45, 45))
+            torsoIndex = len(self.bodyList) - 1
+            #Arm 1
+            self.__addBodyPart(world, (.35, 1.25), (0, 10.75), len(self.bodyList) - 1, (-90, 90))
+            self.__addBodyPart(world, (.35, 1.25), (0, 8.25), len(self.bodyList) - 1, (0, 90))
+            #Arm 2
+            self.__addBodyPart(world, (.35, 1.25), (0, 10.75), torsoIndex, (-90, 90))
+            self.__addBodyPart(world, (.35, 1.25), (0, 8.25), len(self.bodyList) - 1, (0, 90))
         #Leg 1
-        self.__addBodyPart(world, (.5, 1.5), (0, 5.5), Walker.BODY_LEG1_UPPER, Walker.BODY_TORSO, Walker.JOINT_LEG1_HIP, (-45, 90))
-        self.__addBodyPart(world, (.5, 1.5), (0, 2.5), Walker.BODY_LEG1_LOWER, Walker.BODY_LEG1_UPPER, Walker.JOINT_LEG1_KNEE, (-90, 0))
-        self.__addBodyPart(world, (1, .25), (0.5, .75), Walker.BODY_LEG1_FOOT, Walker.BODY_LEG1_LOWER, Walker.JOINT_LEG1_ANKLE, (-45, 45), (-.5, 0))
+        self.__addBodyPart(world, (.5, 1.5), (0, 5.5), torsoIndex, (-45, 90))
+        self.__addBodyPart(world, (.5, 1.5), (0, 2.5), len(self.bodyList) - 1, (-90, 0))
+        self.__addBodyPart(world, (1, .25), (0.5, .75), len(self.bodyList) - 1, (-45, 45), (-.5, 0))
         #Leg 2
-        self.__addBodyPart(world, (.5, 1.5), (0, 5.5), Walker.BODY_LEG2_UPPER, Walker.BODY_TORSO, Walker.JOINT_LEG2_HIP, (-45, 90))
-        self.__addBodyPart(world, (.5, 1.5), (0, 2.5), Walker.BODY_LEG2_LOWER, Walker.BODY_LEG2_UPPER, Walker.JOINT_LEG2_KNEE, (-90, 0))
-        self.__addBodyPart(world, (1, .25), (0.5, .75), Walker.BODY_LEG2_FOOT, Walker.BODY_LEG2_LOWER, Walker.JOINT_LEG2_ANKLE, (-45, 45), (-.5, 0))
+        self.__addBodyPart(world, (.5, 1.5), (0, 5.5), torsoIndex, (-45, 90))
+        self.__addBodyPart(world, (.5, 1.5), (0, 2.5), len(self.bodyList) - 1, (-90, 0))
+        self.__addBodyPart(world, (1, .25), (0.5, .75), len(self.bodyList) - 1, (-45, 45), (-.5, 0))
 
         self.resetPosition()
 
-    def __addBodyPart(self, world, box, position, bodyIndex, connectedBodyIndex = -1, jointIndex = -1, jointLimits = (0, 0), jointOffset=(0,0)):
-        self.positionList[bodyIndex] = position
+    def __addBodyPart(self, world, box, position, connectedBodyIndex=-1, jointLimits = (0, 0), jointOffset=(0,0)):
+        self.positionList.append(position)
         body = world.CreateDynamicBody(position=position)
         body.CreatePolygonFixture(box=box, density=1, friction=0.3, filter=b2Filter(groupIndex = -1))
-        self.bodyList[bodyIndex] = body
+        self.bodyList.append(body)
         if(connectedBodyIndex >= 0):
             #Connect the joint at the top middle of this object, plus any offset
             joint = world.CreateRevoluteJoint(bodyA=self.bodyList[connectedBodyIndex],
@@ -68,7 +52,7 @@ class Walker:
                                               enableLimit = True,
                                               maxMotorTorque = 100.0,
                                               enableMotor = True)
-            self.jointList[jointIndex] = joint
+            self.jointList.append(joint)
 
     def getJointAngles(self):
         jointAngles = []
@@ -84,7 +68,7 @@ class Walker:
             print("ERROR: Size mismatch in setting joint forces.")
 
     def getTorsoPosition(self):
-        return self.bodyList[Walker.BODY_TORSO].position[0]
+        return self.bodyList[self.torsoIndex].position[0]
 
     def resetPosition(self):
         for i in range(len(self.bodyList)):
@@ -92,10 +76,4 @@ class Walker:
             body.transform = [self.positionList[i], 0]
             body.linearVelocity = (0, 0)
             body.angularVelocity = 0
-
-        #Move the arms and legs slightly so that they diverge from the start
-        self.bodyList[Walker.BODY_LEG1_UPPER].angularVelocity = 5
-        self.bodyList[Walker.BODY_LEG2_UPPER].angularVelocity = -5
-        self.bodyList[Walker.BODY_ARM1_UPPER].angularVelocity = 5
-        self.bodyList[Walker.BODY_ARM2_UPPER].angularVelocity = -5
 

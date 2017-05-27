@@ -14,13 +14,13 @@ class Simulator(Framework):
         #Create the ground
         self.world.CreateStaticBody(position=(0, -10), shapes=b2PolygonShape(box=(50, 10)))
 
-        self.secondsPerTrial = 15
+        self.secondsPerTrial = 5
         self.walkerCount = 40
 
         #Make some walkers
         self.walkerList = []
         for i in range(self.walkerCount):
-            self.walkerList.append(Walker(self.world))
+            self.walkerList.append(Walker(self.world, True))
 
         #Make a population of agents
         jointCount = len(self.walkerList[0].jointList)
