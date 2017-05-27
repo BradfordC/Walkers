@@ -8,11 +8,23 @@ class Agent:
         self.fitness = 0
 
     def cross(self, otherAgent):
-        childNetwork = Network(self.network.layerSizes[0], self.network.layerSizes[-1], self.network.layerSizes[1:-1])
+        childNetwork = Network.fromNetwork(self.network)
         for i in range(len(self.network.Layers)):
             thisLayer = self.network.Layers[i]
             otherLayer = otherAgent.network.Layers[i]
             childLayer = childNetwork.Layers[i]
+
+            for row in range(len(thisLayer.Weights)):
+                thisLayerRow = thisLayer.Weights[row]
+                otherLayerRow = otherLayer.Weights[row]
+                childLayerRow = childLayer.Weights[row]
+
+                crossoverPoint = random.randint(1,len(thisLayer.Weights[row]) - 1)
+                for column in range(len(thisLayer.Weights[row])):
+                    if(column < crossoverPoint):
+                        childLayerRow[column] = thisLayerRow[column]
+                    else:
+                        childLayerRow[column] = otherLayerRow[column]
 
     def mutate(self):
         for layer in self.network.Layers:

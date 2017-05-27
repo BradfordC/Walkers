@@ -19,6 +19,11 @@ class Network:
 
         self.OutputLayer = OutputLayer.OutputLayer(outputSize)
 
+    @classmethod
+    def fromNetwork(cls, otherNetwork):
+        layerSizes = otherNetwork.GetLayerSizes()
+        return Network(layerSizes[0], layerSizes[-1], layerSizes[1:-1])
+
     def Feedforwad(self, input):
         if(type(input) is list):
             input = np.array(input)

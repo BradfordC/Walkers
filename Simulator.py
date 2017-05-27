@@ -47,7 +47,7 @@ class Simulator(Framework):
 
             print(self.population.getHighestFitness())
             self.population = self.population.makeNextPopulation()
-            self.population.mutateAll(.5)
+            self.population.mutateAll(.25)
 
 
 
