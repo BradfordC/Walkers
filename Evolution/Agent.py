@@ -25,12 +25,13 @@ class Agent:
                         childLayerRow[column] = thisLayerRow[column]
                     else:
                         childLayerRow[column] = otherLayerRow[column]
+        return Agent(childNetwork)
 
     def mutate(self):
         for layer in self.network.Layers:
             #Choose a random row in each layer to mutate
             rowIndex = random.randint(0, len(layer.Weights) - 1) #Randint is inclusive
-            mutationArray = np.random.normal(0,.01,len(layer.Weights[rowIndex]))
+            mutationArray = np.random.normal(0,.02,len(layer.Weights[rowIndex]))
             layer.Weights[rowIndex] = np.add(layer.Weights[rowIndex],mutationArray)
 
 

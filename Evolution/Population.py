@@ -1,5 +1,5 @@
 from Networks import Network
-from Evolution import Agent
+from Evolution import Agent, Selection
 
 import random
 
@@ -15,7 +15,18 @@ class Population:
             self.agentList.append(nextAgent)
 
     def makeNextPopulation(self):
-        return self
+        nextPopulation = Population(len(self.agentList), self.agentList[0].network)
+        for i in range(len(self.agentList)):
+            #Pick a mate that isn't itself
+            mate = i
+            while(mate == i):
+                mate = Selection.TournamentSelect(self.agentList, 3)
+            #Crossover with mate
+            nextPopulation.agentList[i] = self.agentList[i].cross(self.agentList[mate])
+        #Small chance of mutations
+        nextPopulation.mutateAll(.1)
+
+        return nextPopulation
 
     def getHighestFitness(self):
         highestFitness = -999999999
