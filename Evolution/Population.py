@@ -20,7 +20,7 @@ class Population:
             #Pick a mate that isn't itself
             mate = i
             while(mate == i):
-                mate = Selection.TournamentSelect(self.agentList, 3)
+                mate = Selection.TournamentSelect(self.agentList, 5)
             #Crossover with mate
             nextPopulation.agentList[i] = self.agentList[i].cross(self.agentList[mate])
         #Small chance of mutations

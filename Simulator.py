@@ -14,13 +14,13 @@ class Simulator(Framework):
         #Create the ground
         self.world.CreateStaticBody(position=(0, -10), shapes=b2PolygonShape(box=(50, 10)))
 
-        self.secondsPerTrial = 7
-        self.walkerCount = 50
+        self.secondsPerTrial = 10
+        self.walkerCount = 100
 
         #Make some walkers
         self.walkerList = []
         for i in range(self.walkerCount):
-            self.walkerList.append(Walker(self.world, True))
+            self.walkerList.append(Walker(self.world, False))
 
         #Make a population of agents
         jointCount = len(self.walkerList[0].jointList)
@@ -34,7 +34,7 @@ class Simulator(Framework):
         for i in range(self.walkerCount):
             walker = self.walkerList[i]
             #Angle and height of torso
-            input = [walker.getTorsoAngle(), walker.getTorsoPosition()[1]]
+            input = [walker.getTorsoAngle(), walker.getTorsoPosition()[1] / 10.0]
             input.extend(walker.getJointAngles())
 
             network = self.population.agentList[i].network
@@ -52,7 +52,7 @@ class Simulator(Framework):
             print(self.population.getHighestFitness())
             self.population = self.population.makeNextPopulation()
 
-        if (self.stepCount == self.secondsPerTrial * 60 * 1000):
+        if (self.stepCount == self.secondsPerTrial * 60 * 10000):
             exit()
 
 
