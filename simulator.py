@@ -10,10 +10,13 @@ class Simulator(Framework):
     name = "Simulator"
 
     def __init__(self, showGraphics = True):
+        self.showGraphics = showGraphics
         if(showGraphics):
             super(Simulator, self).__init__()
         else:
-            print()
+            self.world = b2World(gravity=(0, -10), doSleep=True)
+            self.stepCount = 0
+
         self.Setup()
 
     def Setup(self):
@@ -21,7 +24,7 @@ class Simulator(Framework):
         self.world.CreateStaticBody(position=(0, -10), shapes=b2PolygonShape(box=(50, 10)))
 
         self.secondsPerTrial = 5
-        self.walkerCount = 10
+        self.walkerCount = 100
 
         #Make some walkers
         self.walkerList = []
@@ -34,7 +37,12 @@ class Simulator(Framework):
         self.population = Population(self.walkerCount, sampleNetwork)
 
     def Step(self, settings):
-        super(Simulator, self).Step(settings)
+        if(self.showGraphics):
+            super(Simulator, self).Step(settings)
+        else:
+            self.stepCount += 1
+            self.world.Step(1 / settings.hz, settings.velocityIterations, settings.positionIterations)
+            self.world.ClearForces()
 
         #Advance all walkers
         for i in range(self.walkerCount):
