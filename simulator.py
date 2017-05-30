@@ -1,4 +1,4 @@
-from .framework import (Framework, main)
+from framework import (Framework, main)
 from math import cos
 from Box2D import *
 from walker import Walker

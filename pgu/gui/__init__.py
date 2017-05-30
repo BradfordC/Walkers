@@ -21,7 +21,7 @@ from .app import App, Desktop
 from .table import Table
 from .document import Document
 #html
-from .area import SlideBox, ScrollArea, List 
+from .area import SlideBox, ScrollArea, List
 
 from .form import Form
 from .group import Group
