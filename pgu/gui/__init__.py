@@ -10,32 +10,32 @@ try:
 except KeyError:
     __builtins__["basestring"] = str
 
-from .theme import Theme
-from .style import Style
-from .widget import Widget
-from .surface import subsurface, ProxySurface
-from .const import *
+from pgu.gui.theme import Theme
+from pgu.gui.style import Style
+from pgu.gui.widget import Widget
+from pgu.gui.surface import subsurface, ProxySurface
+from pgu.gui.const import *
 
-from .container import Container
-from .app import App, Desktop
-from .table import Table
-from .document import Document
+from pgu.gui.container import Container
+from pgu.gui.app import App, Desktop
+from pgu.gui.table import Table
+from pgu.gui.document import Document
 #html
-from .area import SlideBox, ScrollArea, List
+from pgu.gui.area import SlideBox, ScrollArea, List
 
-from .form import Form
-from .group import Group
+from pgu.gui.form import Form
+from pgu.gui.group import Group
 
-from .basic import Spacer, Color, Label, Image, parse_color
-from .button import Icon, Button, Switch, Checkbox, Radio, Tool, Link
-from .input import Input, Password
-from .keysym import Keysym
-from .slider import VSlider, HSlider, VScrollBar, HScrollBar
-from .select import Select
-from .misc import ProgressBar
+from pgu.gui.basic import Spacer, Color, Label, Image, parse_color
+from pgu.gui.button import Icon, Button, Switch, Checkbox, Radio, Tool, Link
+from pgu.gui.input import Input, Password
+from pgu.gui.keysym import Keysym
+from pgu.gui.slider import VSlider, HSlider, VScrollBar, HScrollBar
+from pgu.gui.select import Select
+from pgu.gui.misc import ProgressBar
 
-from .menus import Menus
-from .dialog import Dialog, FileDialog
-from .textarea import TextArea
+from pgu.gui.menus import Menus
+from pgu.gui.dialog import Dialog, FileDialog
+from pgu.gui.textarea import TextArea
 
-from .deprecated import Toolbox, action_open, action_setvalue, action_quit, action_exec
+from pgu.gui.deprecated import Toolbox, action_open, action_setvalue, action_quit, action_exec

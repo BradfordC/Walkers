@@ -1,8 +1,8 @@
 """
 """
-from .const import *
-from . import table
-from . import basic, button
+from pgu.gui.const import *
+from pgu.gui import table
+from pgu.gui import basic, button
 
 class _Menu_Options(table.Table):
     def __init__(self,menu,**params):

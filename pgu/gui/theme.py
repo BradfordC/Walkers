@@ -5,10 +5,10 @@
 import os, re
 import pygame
 
-from .const import *
-from . import widget
-from . import surface
-from .basic import parse_color, is_color
+from pgu.gui.const import *
+from pgu.gui import widget
+from pgu.gui import surface
+from pgu.gui.basic import parse_color, is_color
 
 __file__ = os.path.abspath(__file__)
 

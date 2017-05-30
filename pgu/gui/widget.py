@@ -3,8 +3,8 @@ hierarchy."""
 
 import pygame
 
-from . import pguglobals
-from . import style
+from pgu.gui import pguglobals
+from pgu.gui import style
 
 class SignalCallback:
     # The function to call
@@ -96,7 +96,7 @@ class Widget(object):
         self.cls = 'default'
         if 'cls' in params: self.cls = params['cls']
         if 'name' in params:    
-            from . import form
+            from pgu.gui import form
             self.name = params['name']
             if form.Form.form:
                 form.Form.form.add(self)
@@ -107,7 +107,7 @@ class Widget(object):
         if params['decorate'] != False:
             if (not pguglobals.app):
                 # TODO - fix this somehow
-                from . import app
+                from pgu.gui import app
                 app.App()
             pguglobals.app.theme.decorate(self,params['decorate'])
 

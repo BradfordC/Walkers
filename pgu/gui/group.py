@@ -1,7 +1,7 @@
 """
 """
-from .const import *
-from . import widget
+from pgu.gui.const import *
+from pgu.gui import widget
 
 class Group(widget.Widget):
     """An object for grouping together Form elements.

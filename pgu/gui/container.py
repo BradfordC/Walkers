@@ -3,9 +3,9 @@
 import pygame
 from pygame.locals import *
 
-from .const import *
-from . import widget, surface
-from . import pguglobals
+from pgu.gui.const import *
+from pgu.gui import widget, surface
+from pgu.gui import pguglobals
 
 class Container(widget.Widget):
     """The base container widget, can be used as a template as well as stand alone."""

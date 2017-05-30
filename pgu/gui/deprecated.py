@@ -1,10 +1,10 @@
 import pygame
 
-from .const import *
-from . import table
-from . import group
-from . import button, basic
-from . import pguglobals
+from pgu.gui.const import *
+from pgu.gui import table
+from pgu.gui import group
+from pgu.gui import button, basic
+from pgu.gui import pguglobals
 
 def action_open(value):
     print('gui.action_open',"Scheduled to be deprecated.")

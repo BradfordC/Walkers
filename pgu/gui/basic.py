@@ -3,8 +3,8 @@
 
 import pygame
 
-from .const import *
-from . import widget
+from pgu.gui.const import *
+from pgu.gui import widget
 
 # Turns a descriptive string or a tuple into a pygame color
 def parse_color(desc):

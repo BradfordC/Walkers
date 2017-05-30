@@ -40,7 +40,7 @@ from framework import FrameworkBase, fwSettings
 
 from Box2D import b2DrawExtended, b2Vec2
 
-from opencv_draw import cvcolor, cvcoord
+from backends.opencv_draw import cvcolor, cvcoord
 
 
 class OpencvDraw(framework.b2DrawExtended):

@@ -3,8 +3,8 @@
 import pygame
 from pygame.locals import *
 
-from .const import *
-from . import widget
+from pgu.gui.const import *
+from pgu.gui import widget
 
 class Input(widget.Widget):
     """A single line text input.

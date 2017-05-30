@@ -3,9 +3,9 @@
 import pygame
 from pygame.locals import *
 
-from . import pguglobals
-from . import container
-from .const import *
+from pgu.gui import pguglobals
+from pgu.gui import container
+from pgu.gui.const import *
 
 class App(container.Container):
     """The top-level widget for an application.
@@ -37,7 +37,7 @@ class App(container.Container):
         self.set_global_app()
 
         if theme == None: 
-            from .theme import Theme
+            from pgu.gui.theme import Theme
             theme = Theme()
         self.theme = theme
         

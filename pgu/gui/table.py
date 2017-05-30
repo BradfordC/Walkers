@@ -3,8 +3,8 @@
 
 import sys
 
-from .const import *
-from . import container
+from pgu.gui.const import *
+from pgu.gui import container
 
 class Table(container.Container):
     """A table style container widget.

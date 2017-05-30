@@ -2,9 +2,9 @@
 
 from pygame.locals import *
 
-from .const import *
-from . import widget, surface
-from . import basic
+from pgu.gui.const import *
+from pgu.gui import widget, surface
+from pgu.gui import basic
 
 class _button(widget.Widget):
     # The underlying 'value' accessed by the getter and setters below

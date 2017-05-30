@@ -3,10 +3,10 @@
 
 import traceback
 
-from .const import *
-from .button import Button
-from .basic import Label, Image
-from .table import Table
+from pgu.gui.const import *
+from pgu.gui.button import Button
+from pgu.gui.basic import Label, Image
+from pgu.gui.table import Table
 
 class Select(Table):
     """A combo dropdown box widget.
