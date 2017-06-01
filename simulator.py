@@ -4,6 +4,7 @@ from Box2D import *
 from walker import Walker
 from networks.network import Network
 from evolution.population import Population
+from evolution import selection
 
 
 class Simulator(Framework):
@@ -56,11 +57,14 @@ class Simulator(Framework):
             jointForces = [(i - .5)*25 for i in networkOutput]
             walker.setJointForces(jointForces)
 
+        #Every second, add each agent's state to its history
+        if (self.stepCount % 60) == 0:
+            for i in range(len(self.population.agentList)):
+                self.population.agentList[i].addToHistory(self.walkerList[i].getJointAngles())
+
         #Deal with the end of a trial
         if (self.stepCount % (self.secondsPerTrial * 60)) == 0:
-            self.population.setFitness(self.walkerList)
-            print(self.population.getHighestFitness())
-            self.population = self.population.makeNextPopulation()
+            self.population = self.population.makeNextPopulation(self.walkerList, selection.NOVELTY)
             for walker in self.walkerList:
                 walker.resetPosition()
 

@@ -6,6 +6,7 @@ class Agent:
     def __init__(self, network):
         self.network = network
         self.fitness = 0
+        self.novelty = 0
         #History of the agent during its generation, used for similarity testing
         self.history = []
 
