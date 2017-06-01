@@ -22,6 +22,10 @@
 
 
 class fwSettings(object):
+    #
+
+
+
     # The default backend to use in (can be: pyglet, pygame, etc.)
     backend = 'pygame'
 
