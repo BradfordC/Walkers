@@ -58,13 +58,11 @@ class Simulator(Framework):
 
         #Deal with the end of a trial
         if (self.stepCount % (self.secondsPerTrial * 60)) == 0:
-            for i in range(self.walkerCount):
-                walker = self.walkerList[i]
-                self.population.agentList[i].fitness = walker.getTorsoPosition()[0] + walker.getTorsoPosition()[1];
-                walker.resetPosition()
-
+            self.population.setFitness(self.walkerList)
             print(self.population.getHighestFitness())
             self.population = self.population.makeNextPopulation()
+            for walker in self.walkerList:
+                walker.resetPosition()
 
         if (self.stepCount == self.secondsPerTrial * 60 * 10000):
             exit()
