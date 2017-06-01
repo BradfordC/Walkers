@@ -2,7 +2,7 @@ from simulator import Simulator
 import framework
 import settings
 
-useGraphics = False
+useGraphics = True
 
 if(useGraphics):
     framework.main(Simulator)

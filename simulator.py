@@ -64,7 +64,7 @@ class Simulator(Framework):
 
         #Deal with the end of a trial
         if (self.stepCount % (self.secondsPerTrial * 60)) == 0:
-            self.population = self.population.makeNextPopulation(self.walkerList, selection.NOVELTY)
+            self.population = self.population.makeNextPopulation(self.walkerList, selection.COMBINED)
             for walker in self.walkerList:
                 walker.resetPosition()
 

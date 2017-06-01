@@ -3,6 +3,7 @@ import random
 
 OBJECTIVE = 0
 NOVELTY = 1
+COMBINED = 2
 
 #Returns a parent based on tournament selection
 def TournamentSelect(agentList, tournamentSize, selectionCriteria):
@@ -17,6 +18,8 @@ def TournamentSelect(agentList, tournamentSize, selectionCriteria):
             candidateFitness = agentList[candidate].fitness
         elif(selectionCriteria == NOVELTY):
             candidateFitness = agentList[candidate].novelty
+        elif(selectionCriteria == COMBINED):
+            candidateFitness = agentList[candidate].fitness + agentList[candidate].novelty
 
         if(candidateFitness > largestFitness):
             largestFitness = candidateFitness

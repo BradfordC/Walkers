@@ -47,6 +47,10 @@ class Population:
         elif(selectionCriteria == selection.NOVELTY):
             self.setNovelty()
             print(self.getHighestNovelty())
+        elif(selectionCriteria == selection.COMBINED):
+            self.setFitness(walkerList)
+            self.setNovelty()
+            print(self.getHighestFitness())
 
         nextPopulation = Population(len(self.agentList), self.agentList[0].network)
         for i in range(len(self.agentList)):
