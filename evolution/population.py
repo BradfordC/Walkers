@@ -43,14 +43,14 @@ class Population:
     def makeNextPopulation(self, walkerList, selectionCriteria):
         if(selectionCriteria == selection.OBJECTIVE):
             self.setFitness(walkerList)
-            print(self.getHighestFitness())
+            print(str(self.getAverageFitness()) + "\t" + str(self.getHighestFitness()))
         elif(selectionCriteria == selection.NOVELTY):
             self.setNovelty()
             print(self.getHighestNovelty())
         elif(selectionCriteria == selection.COMBINED):
             self.setFitness(walkerList)
             self.setNovelty()
-            print(self.getHighestFitness())
+            print(str(self.getAverageFitness()) + "\t" + str(self.getHighestFitness()))
 
         nextPopulation = Population(len(self.agentList), self.agentList[0].network)
         for i in range(len(self.agentList)):
@@ -73,6 +73,12 @@ class Population:
                 highestFitness = agent.fitness
         return highestFitness
 
+    def getAverageFitness(self):
+        fitnessSum = 0
+        for agent in self.agentList:
+            fitnessSum += agent.fitness
+        return fitnessSum / len(self.agentList)
+
     # Find the highest novelty value in the population
     def getHighestNovelty(self):
         highestNovelty = -999999999
@@ -80,6 +86,12 @@ class Population:
             if (highestNovelty < agent.novelty):
                 highestNovelty = agent.novelty
         return highestNovelty
+
+    def getAverageNovelty(self):
+        noveltySum = 0
+        for agent in self.agentList:
+            noveltySum += agent.novelty
+        return noveltySum / len(self.agentList)
 
     #Try to mutate all agents with a certain chance of mutation
     def mutateAll(self, mutationChance):
