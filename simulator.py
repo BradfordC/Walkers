@@ -9,6 +9,7 @@ from fileHandling import fileHandler
 
 class Simulator(Framework):
     name = "Simulator"
+    experimentCount = 0
 
     def __init__(self, showGraphics = True):
         self.showGraphics = showGraphics
@@ -17,7 +18,7 @@ class Simulator(Framework):
         else:
             self.world = b2World(gravity=(0, -10), doSleep=True)
             self.stepCount = 0
-        
+
         self.fileHandler = fileHandler(learningSettings.fileName)
 
         self.Setup()
@@ -93,7 +94,11 @@ class Simulator(Framework):
 
     #What to do at the end of the experiment
     def afterExperiment(self, settings):
-        exit()
+        Simulator.experimentCount += 1
+        if(Simulator.experimentCount >= learningSettings.numberOfExperiments):
+            exit()
+        else:
+            self.__init__(False)
 
 if __name__ == "__main__":
     main(Simulator)

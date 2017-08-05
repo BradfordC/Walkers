@@ -4,8 +4,9 @@ class learningSettings:
     useGraphics = False
 
     selectionCriteria = selection.OBJECTIVE
-    fileName = 'Objective'
+    fileName = 'Test'
 
     secondsPerTrial = 7
-    walkerCount = 250
-    numberOfTrials = 100
+    walkerCount = 10
+    numberOfTrials = 5
+    numberOfExperiments = 2
