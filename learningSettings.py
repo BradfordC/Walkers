@@ -6,7 +6,7 @@ class learningSettings:
     selectionCriteria = selection.OBJECTIVE
     fileName = 'Test'
 
-    secondsPerTrial = 7
+    secondsPerRun = 7
     walkerCount = 10
-    numberOfTrials = 5
-    numberOfExperiments = 2
+    numberOfGenerations = 100
+    numberOfExperiments = 1

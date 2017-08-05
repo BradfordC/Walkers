@@ -61,12 +61,12 @@ class Simulator(Framework):
         if (self.stepCount % settings.hz) == 0:
             self.afterSecond(settings)
 
-        #Deal with the end of a trial
-        if (self.stepCount % (learningSettings.secondsPerTrial * settings.hz)) == 0:
-            self.afterTrial(settings)
+        #Deal with the end of a generation
+        if (self.stepCount % (learningSettings.secondsPerRun * settings.hz)) == 0:
+            self.afterGeneration(settings)
 
         #Deal with end of experiment
-        if (self.stepCount == learningSettings.secondsPerTrial * settings.hz * learningSettings.numberOfTrials):
+        if (self.stepCount == learningSettings.secondsPerRun * settings.hz * learningSettings.numberOfGenerations):
             self.afterExperiment(settings)
 
     #What to do each second
@@ -75,8 +75,8 @@ class Simulator(Framework):
         for i in range(len(self.population.agentList)):
             self.population.agentList[i].addToHistory(self.walkerList[i].getJointAngles())
 
-    #What to do each trial
-    def afterTrial(self, settings):
+    #What to do each generation
+    def afterGeneration(self, settings):
         self.population.calculateFitness(self.walkerList, learningSettings.selectionCriteria)
         #Print the average and highest positions
         positionSum = 0
@@ -85,9 +85,9 @@ class Simulator(Framework):
             walkerPosition = walker.getTorsoPosition()[0]
             positionSum += walkerPosition
             highestPosition = max(highestPosition, walkerPosition)
-        self.fileHandler.write(str((int) (self.stepCount / (learningSettings.secondsPerTrial * settings.hz))) + ',' + str(positionSum / len(self.walkerList)) + ',' + str(highestPosition) + '\n')
-        #Make the next population
-        print(str((int) (self.stepCount / (learningSettings.secondsPerTrial * settings.hz))) + ": ", end="")
+        self.fileHandler.write(str((int) (self.stepCount / (learningSettings.secondsPerRun * settings.hz))) + ',' + str(positionSum / len(self.walkerList)) + ',' + str(highestPosition) + '\n')
+        #Make the next generation
+        print(str((int) (self.stepCount / (learningSettings.secondsPerRun * settings.hz))) + ": ", end="")
         self.population = self.population.makeNextPopulation(self.walkerList, learningSettings.selectionCriteria)
         for walker in self.walkerList:
             walker.resetPosition()
