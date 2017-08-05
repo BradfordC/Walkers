@@ -17,8 +17,7 @@ class Simulator(Framework):
         else:
             self.world = b2World(gravity=(0, -10), doSleep=True)
             self.stepCount = 0
-
-
+        
         self.fileHandler = fileHandler(learningSettings.fileName)
 
         self.Setup()
@@ -57,33 +56,44 @@ class Simulator(Framework):
             jointForces = [(i - .5)*25 for i in networkOutput]
             walker.setJointForces(jointForces)
 
-        #Every second, add each agent's state to its history
+        #Do this every second
         if (self.stepCount % settings.hz) == 0:
-            for i in range(len(self.population.agentList)):
-                self.population.agentList[i].addToHistory(self.walkerList[i].getJointAngles())
+            self.afterSecond(settings)
 
         #Deal with the end of a trial
         if (self.stepCount % (learningSettings.secondsPerTrial * settings.hz)) == 0:
-            self.population.calculateFitness(self.walkerList, learningSettings.selectionCriteria)
-            #Print the average and highest positions
-            positionSum = 0
-            highestPosition = -90
-            for walker in self.walkerList:
-                walkerPosition = walker.getTorsoPosition()[0]
-                positionSum += walkerPosition
-                highestPosition = max(highestPosition, walkerPosition)
-            self.fileHandler.write(str((int) (self.stepCount / (learningSettings.secondsPerTrial * settings.hz))) + ',' + str(positionSum / len(self.walkerList)) + ',' + str(highestPosition) + '\n')
-            #Make the next population
-            print(str((int) (self.stepCount / (learningSettings.secondsPerTrial * settings.hz))) + ": ", end="")
-            self.population = self.population.makeNextPopulation(self.walkerList, learningSettings.selectionCriteria)
-            for walker in self.walkerList:
-                walker.resetPosition()
+            self.afterTrial(settings)
 
-
+        #Deal with end of experiment
         if (self.stepCount == learningSettings.secondsPerTrial * settings.hz * learningSettings.numberOfTrials):
-            exit()
+            self.afterExperiment(settings)
 
+    #What to do each second
+    def afterSecond(self, settings):
+        #Add each agent's state to its history
+        for i in range(len(self.population.agentList)):
+            self.population.agentList[i].addToHistory(self.walkerList[i].getJointAngles())
 
+    #What to do each trial
+    def afterTrial(self, settings):
+        self.population.calculateFitness(self.walkerList, learningSettings.selectionCriteria)
+        #Print the average and highest positions
+        positionSum = 0
+        highestPosition = -90
+        for walker in self.walkerList:
+            walkerPosition = walker.getTorsoPosition()[0]
+            positionSum += walkerPosition
+            highestPosition = max(highestPosition, walkerPosition)
+        self.fileHandler.write(str((int) (self.stepCount / (learningSettings.secondsPerTrial * settings.hz))) + ',' + str(positionSum / len(self.walkerList)) + ',' + str(highestPosition) + '\n')
+        #Make the next population
+        print(str((int) (self.stepCount / (learningSettings.secondsPerTrial * settings.hz))) + ": ", end="")
+        self.population = self.population.makeNextPopulation(self.walkerList, learningSettings.selectionCriteria)
+        for walker in self.walkerList:
+            walker.resetPosition()
+
+    #What to do at the end of the experiment
+    def afterExperiment(self, settings):
+        exit()
 
 if __name__ == "__main__":
     main(Simulator)

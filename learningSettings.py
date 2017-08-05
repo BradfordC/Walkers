@@ -1,11 +1,11 @@
 from evolution import selection
 
 class learningSettings:
-    useGraphics = True
+    useGraphics = False
 
-    selectionCriteria = selection.NOVELTY
-    fileName = 'Test'
+    selectionCriteria = selection.OBJECTIVE
+    fileName = 'Objective'
 
     secondsPerTrial = 7
-    walkerCount = 100
+    walkerCount = 250
     numberOfTrials = 100
