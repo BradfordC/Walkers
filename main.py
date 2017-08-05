@@ -1,10 +1,9 @@
 from simulator import Simulator
 import framework
 import simulatorSettings
+from learningSettings import learningSettings
 
-useGraphics = False
-
-if(useGraphics):
+if(learningSettings.useGraphics):
     framework.main(Simulator)
 else:
     simulator = Simulator(False)
