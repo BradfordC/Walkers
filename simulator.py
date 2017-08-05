@@ -1,11 +1,10 @@
 from framework import (Framework, main)
-from math import cos
 from Box2D import *
 from walker import Walker
 from networks.network import Network
 from evolution.population import Population
-from evolution import selection
 from learningSettings import learningSettings
+from fileHandling import fileHandler
 
 
 class Simulator(Framework):
@@ -19,7 +18,8 @@ class Simulator(Framework):
             self.world = b2World(gravity=(0, -10), doSleep=True)
             self.stepCount = 0
 
-        self.resultsFile = open('results/Test.txt', 'w')
+
+        self.fileHandler = fileHandler(learningSettings.fileName)
 
         self.Setup()
 
@@ -72,7 +72,7 @@ class Simulator(Framework):
                 walkerPosition = walker.getTorsoPosition()[0]
                 positionSum += walkerPosition
                 highestPosition = max(highestPosition, walkerPosition)
-            self.resultsFile.write(str((int) (self.stepCount / (learningSettings.secondsPerTrial * settings.hz))) + ',' + str(positionSum / len(self.walkerList)) + ',' + str(highestPosition) + '\n')
+            self.fileHandler.write(str((int) (self.stepCount / (learningSettings.secondsPerTrial * settings.hz))) + ',' + str(positionSum / len(self.walkerList)) + ',' + str(highestPosition) + '\n')
             #Make the next population
             print(str((int) (self.stepCount / (learningSettings.secondsPerTrial * settings.hz))) + ": ", end="")
             self.population = self.population.makeNextPopulation(self.walkerList, learningSettings.selectionCriteria)
@@ -81,7 +81,6 @@ class Simulator(Framework):
 
 
         if (self.stepCount == learningSettings.secondsPerTrial * settings.hz * learningSettings.numberOfTrials):
-            self.resultsFile.close()
             exit()
 
 
