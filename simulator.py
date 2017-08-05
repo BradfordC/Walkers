@@ -77,6 +77,7 @@ class Simulator(Framework):
 
     #What to do each generation
     def afterGeneration(self, settings):
+        print(str((int) (self.stepCount / (learningSettings.secondsPerRun * settings.hz))) + ": ", end="")
         self.population.calculateFitness(self.walkerList, learningSettings.selectionCriteria)
         #Print the average and highest positions
         positionSum = 0
@@ -87,7 +88,6 @@ class Simulator(Framework):
             highestPosition = max(highestPosition, walkerPosition)
         self.fileHandler.write(str((int) (self.stepCount / (learningSettings.secondsPerRun * settings.hz))) + ',' + str(positionSum / len(self.walkerList)) + ',' + str(highestPosition) + '\n')
         #Make the next generation
-        print(str((int) (self.stepCount / (learningSettings.secondsPerRun * settings.hz))) + ": ", end="")
         self.population = self.population.makeNextPopulation(self.walkerList, learningSettings.selectionCriteria)
         for walker in self.walkerList:
             walker.resetPosition()
