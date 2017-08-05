@@ -43,7 +43,7 @@ from pyglet import gl
 
 from Box2D import (b2Vec2, b2Draw)
 from ..framework import (FrameworkBase, Keys)
-from ..settings import fwSettings
+from ..simulatorSettings import fwSettings
 
 
 class grBlended (pyglet.graphics.Group):

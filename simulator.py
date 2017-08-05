@@ -18,14 +18,19 @@ class Simulator(Framework):
             self.world = b2World(gravity=(0, -10), doSleep=True)
             self.stepCount = 0
 
+        self.resultsFile = open('results/Novel3.txt', 'w')
+
         self.Setup()
 
     def Setup(self):
         #Create the ground
         self.world.CreateStaticBody(position=(0, -10), shapes=b2PolygonShape(box=(50, 10)))
 
-        self.secondsPerTrial = 5
-        self.walkerCount = 100
+        self.secondsPerTrial = 7
+        self.walkerCount = 250
+        self.numberOfTrials = 100
+
+        self.selectionCriteria = selection.NOVELTY
 
         #Make some walkers
         self.walkerList = []
@@ -58,18 +63,30 @@ class Simulator(Framework):
             walker.setJointForces(jointForces)
 
         #Every second, add each agent's state to its history
-        if (self.stepCount % 60) == 0:
+        if (self.stepCount % 30) == 0:
             for i in range(len(self.population.agentList)):
                 self.population.agentList[i].addToHistory(self.walkerList[i].getJointAngles())
 
         #Deal with the end of a trial
-        if (self.stepCount % (self.secondsPerTrial * 60)) == 0:
-            print(str((int) (self.stepCount / (self.secondsPerTrial * 60))) + ": ", end="")
-            self.population = self.population.makeNextPopulation(self.walkerList, selection.COMBINED)
+        if (self.stepCount % (self.secondsPerTrial * 30)) == 0:
+            self.population.calculateFitness(self.walkerList, self.selectionCriteria)
+            #Print the average and highest positions
+            positionSum = 0
+            highestPosition = -90
+            for walker in self.walkerList:
+                walkerPosition = walker.getTorsoPosition()[0]
+                positionSum += walkerPosition
+                highestPosition = max(highestPosition, walkerPosition)
+            self.resultsFile.write(str((int) (self.stepCount / (self.secondsPerTrial * 30))) + ',' + str(positionSum / len(self.walkerList)) + ',' + str(highestPosition) + '\n')
+            #Make the next population
+            print(str((int) (self.stepCount / (self.secondsPerTrial * 30))) + ": ", end="")
+            self.population = self.population.makeNextPopulation(self.walkerList, self.selectionCriteria)
             for walker in self.walkerList:
                 walker.resetPosition()
 
-        if (self.stepCount == self.secondsPerTrial * 60 * 10000):
+
+        if (self.stepCount == self.secondsPerTrial * 30 * self.numberOfTrials):
+            self.resultsFile.close()
             exit()
 
 

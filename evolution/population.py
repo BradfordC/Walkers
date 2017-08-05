@@ -39,8 +39,8 @@ class Population:
         for agent in self.agentList:
             agent.novelty /= len(self.agentList)
 
-    #Cross agents to create another population
-    def makeNextPopulation(self, walkerList, selectionCriteria):
+    #Calculate the fitness for each agent
+    def calculateFitness(self, walkerList, selectionCriteria):
         if(selectionCriteria == selection.OBJECTIVE):
             self.setFitness(walkerList)
             print(str(self.getAverageFitness()) + "\t" + str(self.getHighestFitness()))
@@ -52,6 +52,8 @@ class Population:
             self.setNovelty()
             print(str(self.getAverageFitness()) + "\t" + str(self.getHighestFitness()))
 
+    #Cross agents to create another population
+    def makeNextPopulation(self, walkerList, selectionCriteria):
         nextPopulation = Population(len(self.agentList), self.agentList[0].network)
         for i in range(len(self.agentList)):
             #Pick a mate that isn't itself

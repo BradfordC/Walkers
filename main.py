@@ -1,12 +1,12 @@
 from simulator import Simulator
 import framework
-import settings
+import simulatorSettings
 
-useGraphics = True
+useGraphics = False
 
 if(useGraphics):
     framework.main(Simulator)
 else:
     simulator = Simulator(False)
     while(True):
-        simulator.Step(settings.fwSettings)
+        simulator.Step(simulatorSettings.fwSettings)
