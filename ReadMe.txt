@@ -25,3 +25,14 @@ Box2D-2.3.1 is installed when pybox2d is installed
 Currently, you just need to run main.py to start the program. All settings should be changed in the source files.
 
 The graphics packages originally had issues with where you ran main.py from. This has been fixed for pygame, but if you plan on using opencv or another graphics package you'll either have to run it from its parent directory or fix the issues in the code.
+
+
+
+---Package Files---
+The following files are from the graphics/physics packages, and will probably not need to be edited:
+    -backends/
+    -data/
+    -pgu/
+    -framework.py
+    -simulatorSettings.py
+All others were written for this research project (or are being reused).
