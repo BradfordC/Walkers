@@ -47,7 +47,7 @@ from Box2D import (b2AABB, b2CircleShape, b2Color, b2DistanceJoint,
 from Box2D import (b2_pi, b2_staticBody, b2_kinematicBody)
 
 from ..framework import (fwQueryCallback, FrameworkBase, Keys)
-from .. import simulatorSettings
+from .. import physicsSettings
 from .pyqt4_gui import Ui_MainWindow
 
 
@@ -477,7 +477,7 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         layout = QtGui.QVBoxLayout()
         gb.setLayout(layout)
 
-        for text, variable in simulatorSettings.checkboxes:
+        for text, variable in physicsSettings.checkboxes:
             if variable:
                 widget = QtGui.QCheckBox('&' + text)
 
@@ -493,7 +493,7 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
 
             layout.addWidget(widget)
 
-        for slider in simulatorSettings.sliders:
+        for slider in physicsSettings.sliders:
             label = QtGui.QLabel(slider['text'])
             label.setAlignment(Qt.AlignHCenter)
             layout.addWidget(label)
@@ -524,7 +524,7 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
             else:
                 widget.setValue(getattr(step_settings, var))
 
-        for slider in simulatorSettings.sliders:
+        for slider in physicsSettings.sliders:
             var = slider['name']
             self.settings_widgets[var].setValue(getattr(step_settings, var))
 
@@ -630,7 +630,7 @@ class Pyqt4Framework(FrameworkBase):
 
         self.__reset()
 
-        if simulatorSettings.fwSettings.onlyInit:  # testing mode doesn't initialize Pyqt4
+        if physicsSettings.fwSettings.onlyInit:  # testing mode doesn't initialize Pyqt4
             return
 
         global app

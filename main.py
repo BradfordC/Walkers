@@ -1,6 +1,6 @@
 from simulator import Simulator
 import framework
-import simulatorSettings
+import physicsSettings
 from learningSettings import learningSettings
 
 if(learningSettings.useGraphics):
@@ -8,4 +8,4 @@ if(learningSettings.useGraphics):
 else:
     simulator = Simulator(False)
     while(True):
-        simulator.Step(simulatorSettings.fwSettings)
+        simulator.Step(physicsSettings.fwSettings)

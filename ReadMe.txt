@@ -34,5 +34,5 @@ The following files are from the graphics/physics packages, and will probably no
     -data/
     -pgu/
     -framework.py
-    -simulatorSettings.py
+    -physicsSettings.py
 All others were written for this research project (or are being reused).

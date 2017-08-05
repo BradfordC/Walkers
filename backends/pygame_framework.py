@@ -55,7 +55,7 @@ from pygame.locals import (QUIT, KEYDOWN, KEYUP, MOUSEBUTTONDOWN,
                            MOUSEBUTTONUP, MOUSEMOTION, KMOD_LSHIFT)
 
 from framework import (FrameworkBase, Keys)
-from simulatorSettings import fwSettings
+from physicsSettings import fwSettings
 from Box2D import (b2DrawExtended, b2Vec2)
 
 try:

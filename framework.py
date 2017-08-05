@@ -29,7 +29,7 @@ from Box2D import (b2Fixture, b2FixtureDef, b2Joint)
 from Box2D import (b2GetPointStates, b2QueryCallback, b2Random)
 from Box2D import (b2_addState, b2_dynamicBody, b2_epsilon, b2_persistState)
 
-from simulatorSettings import fwSettings
+from physicsSettings import fwSettings
 
 
 class fwDestructionListener(b2DestructionListener):
@@ -85,7 +85,7 @@ class FrameworkBase(b2ContactListener):
       See empty.py or any of the other tests for more information.
     * Do NOT want to implement your own renderer:
       You should derive your class from Framework. The renderer chosen in
-      fwSettings (see simulatorSettings.py) or on the command line will automatically
+      fwSettings (see physicsSettings.py) or on the command line will automatically
       be used for your test.
     """
     name = "None"
