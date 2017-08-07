@@ -48,8 +48,8 @@ class Agent:
         self.history.append(stateArray)
 
     #Compare the two agents' histories to see how different the two are
-    def getDifference(self, otherAgent):
-        if(len(self.history) != len (otherAgent.history)):
+    def getDifference(self, otherAgentHistory):
+        if(len(self.history) != len (otherAgentHistory)):
             print("Error: Histories are not the same size.")
             return None
 
@@ -58,7 +58,7 @@ class Agent:
         #For each state, check the difference between all values
         for stateIndex in range(len(self.history)):
             myState = self.history[stateIndex]
-            otherState = otherAgent.history[stateIndex]
+            otherState = otherAgentHistory[stateIndex]
 
             if(len(myState) != len(otherState)):
                 print("Error: States are not the same size.")

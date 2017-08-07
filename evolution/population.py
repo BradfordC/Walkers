@@ -31,7 +31,7 @@ class Population:
             for j in range(i + 1, len(self.agentList)):
                 firstAgent = self.agentList[i]
                 secondAgent = self.agentList[j]
-                difference = firstAgent.getDifference(secondAgent)
+                difference = firstAgent.getDifference(secondAgent.history)
                 firstAgent.novelty += difference
                 secondAgent.novelty += difference
 
