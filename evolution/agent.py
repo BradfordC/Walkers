@@ -68,3 +68,7 @@ class Agent:
                 totalDifference += abs(myState[i] - otherState[i])
 
         return totalDifference
+
+    #Used for sorting populations
+    def getFitness(self):
+        return self.fitness

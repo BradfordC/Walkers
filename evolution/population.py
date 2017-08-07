@@ -52,6 +52,11 @@ class Population:
             self.setNovelty()
             print(str(self.getAverageFitness()) + "\t" + str(self.getHighestFitness()))
 
+    #Sort the population so it starts with the agent with the highest fitness
+    def sortByFitness(self):
+        self.agentList.sort(key=agent.Agent.getFitness, reverse=True)
+
+
     #Cross agents to create another population
     def makeNextPopulation(self, walkerList, selectionCriteria):
         nextPopulation = Population(len(self.agentList), self.agentList[0].network)
