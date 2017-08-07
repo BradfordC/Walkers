@@ -1,4 +1,5 @@
 from Box2D import *
+import random
 
 
 class Walker:
@@ -54,12 +55,21 @@ class Walker:
                                               enableMotor = True)
             self.jointList.append(joint)
 
+    #Get an array of the current joint angles
     def getJointAngles(self):
         jointAngles = []
         for joint in self.jointList:
             jointAngles.append(joint.angle)
         return jointAngles
 
+    #Get an array of random possible joint angles
+    def getRandomJointAngles(self):
+        jointAngles = []
+        for joint in self.jointList:
+            jointAngles.append(random.uniform(joint.lowerAngle, joint.upperAngle))
+        return jointAngles
+
+    #Set the forces on the joints
     def setJointForces(self, forces):
         if(len(forces) == len(self.jointList)):
             for i in range(len(forces)):
