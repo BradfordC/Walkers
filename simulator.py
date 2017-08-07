@@ -79,6 +79,7 @@ class Simulator(Framework):
     def afterGeneration(self, settings):
         print(str((int) (self.stepCount / (learningSettings.secondsPerRun * settings.hz))) + ": ", end="")
         self.population.calculateFitness(self.walkerList, learningSettings.selectionCriteria)
+        print(len(self.population.agentList[0].history))
         #Print the average and highest positions
         positionSum = 0
         highestPosition = -90

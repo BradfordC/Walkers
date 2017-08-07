@@ -1,4 +1,3 @@
-from evolution import agent
 import random
 
 OBJECTIVE = 0

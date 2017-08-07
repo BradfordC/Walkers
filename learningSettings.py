@@ -4,9 +4,14 @@ class learningSettings:
     useGraphics = False
 
     selectionCriteria = selection.COMBINED
-    fileName = 'Combined'
+    fileName = 'Combined2x'
 
-    secondsPerRun = 7
-    walkerCount = 250
-    numberOfGenerations = 100
+    secondsPerRun = 100
+    walkerCount = 500
+    numberOfGenerations = 200
     numberOfExperiments = 1
+
+    #Speciation
+    initialEnergy = 5
+    foodCount = 10
+    foodUses = 5

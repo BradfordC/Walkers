@@ -1,12 +1,16 @@
 from networks.network import Network
 import random
 import numpy as np
+from learningSettings import learningSettings
 
 class Agent:
     def __init__(self, network):
         self.network = network
         self.fitness = 0
         self.novelty = 0
+        #Speciation variables
+        self.maxEnergy = learningSettings.initialEnergy
+        self.energy = self.maxEnergy
         #History of the agent during its generation, used for similarity testing
         self.history = []
 
