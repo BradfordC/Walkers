@@ -15,5 +15,6 @@ class learningSettings:
     initialEnergy = 5
     foodCount = 10
     foodUses = 5
+    foodEnergy = 5
 
-    choosinessLimit = 6
+    choosinessLimit = secondsPerRun * .6

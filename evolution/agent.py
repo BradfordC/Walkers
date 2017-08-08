@@ -77,7 +77,7 @@ class Agent:
     #Eat food if possible
     def eatFood(self, food):
         if(food.canBeEaten(self)):
-            self.energy = min(self.energy + food.value, self.maxEnergy)
+            self.energy = min(self.energy + food.energy, self.maxEnergy)
             food.remainingUses = food.remainingUses - 1
             return True
         else:

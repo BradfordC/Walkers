@@ -3,7 +3,6 @@ from learningSettings import learningSettings
 import random
 
 class Environment:
-
     def __init__(self):
         self.foodList = []
 
@@ -55,18 +54,34 @@ class Environment:
 
         return newPopulation
 
-    def generateFood(sampleWalker, arraySize):
+    #Create a single instance of food
+    def generateSingleFood(sampleWalker, arraySize):
         food = []
         for i in range(arraySize):
             food.append(sampleWalker.getRandomJointAngles())
         return food
 
+    #Create new food with random histories
+    def generateAllFood(self, sampleWalker, foodCount, foodUses, foodEnergy):
+        self.foodList = []
+        for i in range(foodCount):
+            self.foodList.append(Food(
+                Environment.generateSingleFood(sampleWalker, learningSettings.secondsPerRun),
+                foodUses,
+                foodEnergy
+            ))
+
+    #Refill current food and keep histories
+    def refillAllFood(self):
+        for food in self.foodList:
+            food.refill()
+
 class Food:
-    def __init__(self, history, uses, value):
+    def __init__(self, history, uses, energy):
         self.history = history
         self.maxUses = uses
         self.remainingUses = uses
-        self.value = value
+        self.energy = energy
 
     #See if the agent is able to eat this food
     def canBeEaten(self, agent):
