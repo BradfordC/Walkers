@@ -72,3 +72,12 @@ class Agent:
     #Used for sorting populations
     def getFitness(self):
         return self.fitness
+
+    #Eat food if possible
+    def eatFood(self, food):
+        if(food.canBeEaten(self)):
+            self.energy = min(self.energy + food.value, self.maxEnergy)
+            food.remainingUses = food.remainingUses - 1
+            return True
+        else:
+            return False

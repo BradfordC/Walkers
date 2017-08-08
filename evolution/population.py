@@ -14,6 +14,9 @@ class Population:
             nextAgent = agent.Agent(nextNetwork)
             self.agentList.append(nextAgent)
 
+    def __init__(self):
+        self.agentList = []
+
     #Set the fitness of all agents
     def setFitness(self, walkerList):
         for i in range(len(self.agentList)):
