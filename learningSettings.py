@@ -6,8 +6,8 @@ class learningSettings:
     selectionCriteria = selection.NOVELTY
     fileName = 'Test'
 
-    secondsPerRun = 5
-    walkerCount = 50
+    secondsPerRun = 10
+    walkerCount = 100
     numberOfGenerations = 100
     numberOfExperiments = 1
 
@@ -16,4 +16,4 @@ class learningSettings:
     foodCount = 10
     foodUses = 5
 
-    choosinessLimit = 10
+    choosinessLimit = 6

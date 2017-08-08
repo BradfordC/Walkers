@@ -36,7 +36,7 @@ class Population:
                 firstAgent.novelty += difference
                 secondAgent.novelty += difference
 
-        #Normalize novelty
+        #Get the average novelty
         for agent in self.agentList:
             agent.novelty /= len(self.agentList)
 
