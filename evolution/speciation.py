@@ -44,7 +44,7 @@ class Environment:
                 if(pairIndex == i):
                     continue
                 #Try to mate
-                if(agent.getDifference(breedingPopulation.agentList[pairIndex]) < learningSettings.choosinessLimit):
+                if(agent.getHistoryDistance(breedingPopulation.agentList[pairIndex]) < learningSettings.choosinessLimit):
                     newPopulation.agentList.append(agent.cross(breedingPopulation.agentList[pairIndex]))
                     break
                 #Go to the next potential mate
@@ -70,7 +70,7 @@ class Food:
 
     #See if the agent is able to eat this food
     def canBeEaten(self, agent):
-        return (self.remainingUses > 0) and (agent.getDifference(self.history) < learningSettings.choosinessLimit)
+        return (self.remainingUses > 0) and (agent.getHistoryDistance(self.history) < learningSettings.choosinessLimit)
 
     def refill(self):
         self.remainingUses = self.maxUses

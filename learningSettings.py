@@ -3,11 +3,11 @@ from evolution import selection
 class learningSettings:
     useGraphics = False
 
-    selectionCriteria = selection.COMBINED
-    fileName = 'Combined2x'
+    selectionCriteria = selection.NOVELTY
+    fileName = 'Test'
 
-    secondsPerRun = 10
-    walkerCount = 500
+    secondsPerRun = 5
+    walkerCount = 50
     numberOfGenerations = 100
     numberOfExperiments = 1
 

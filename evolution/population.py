@@ -4,18 +4,16 @@ from evolution import agent, selection
 import random
 
 class Population:
-    def __init__(self, size, baseNetwork):
+    def __init__(self, size=0, baseNetwork=None):
         self.agentList = []
 
-        layerSizes = baseNetwork.GetLayerSizes()
+        if(size > 0):
+            layerSizes = baseNetwork.GetLayerSizes()
 
-        for i in range(size):
-            nextNetwork = network.Network(layerSizes[0], layerSizes[-1], layerSizes[1:-1])
-            nextAgent = agent.Agent(nextNetwork)
-            self.agentList.append(nextAgent)
-
-    def __init__(self):
-        self.agentList = []
+            for i in range(size):
+                nextNetwork = network.Network(layerSizes[0], layerSizes[-1], layerSizes[1:-1])
+                nextAgent = agent.Agent(nextNetwork)
+                self.agentList.append(nextAgent)
 
     #Set the fitness of all agents
     def setFitness(self, walkerList):
@@ -34,7 +32,7 @@ class Population:
             for j in range(i + 1, len(self.agentList)):
                 firstAgent = self.agentList[i]
                 secondAgent = self.agentList[j]
-                difference = firstAgent.getDifference(secondAgent.history)
+                difference = firstAgent.getHistoryDistance(secondAgent.history)
                 firstAgent.novelty += difference
                 secondAgent.novelty += difference
 

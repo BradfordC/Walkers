@@ -48,12 +48,12 @@ class Agent:
         self.history.append(stateArray)
 
     #Compare the two agents' histories to see how different the two are
-    def getDifference(self, otherAgentHistory):
+    def getHistoryDistance(self, otherAgentHistory):
         if(len(self.history) != len (otherAgentHistory)):
             print("Error: Histories are not the same size.")
             return None
 
-        totalDifference = 0
+        totalSquaredDifference = 0
 
         #For each state, check the difference between all values
         for stateIndex in range(len(self.history)):
@@ -65,9 +65,10 @@ class Agent:
                 return None
 
             for i in range(len(myState)):
-                totalDifference += abs(myState[i] - otherState[i])
+                totalSquaredDifference += (myState[i] - otherState[i]) ** 2
 
-        return totalDifference
+        distance = totalSquaredDifference ** 0.5
+        return distance
 
     #Used for sorting populations
     def getFitness(self):
