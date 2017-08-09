@@ -29,29 +29,30 @@ class Environment:
                 newPopulation.agentList.append(agent)
         #Find mates and add the offspring to the final population
         popSize = len(breedingPopulation.agentList)
-        random.shuffle(breedingPopulation.agentList)
-        for i in range(popSize):
-            agent = breedingPopulation.agentList[i]
-            #Find a random mate that is compatible
-            startIndex = random.randint(0, popSize - 1) #Randint is inclusive
-            #Make sure we don't start with ourselves
-            if(startIndex == i):
-                startIndex = (startIndex + 1)%popSize
-            pairIndex = startIndex
-            while True:
-                #Don't mate with itself
-                if(pairIndex == i):
+        if(popSize > 1):
+            random.shuffle(breedingPopulation.agentList)
+            for i in range(popSize):
+                agent = breedingPopulation.agentList[i]
+                #Find a random mate that is compatible
+                startIndex = random.randint(0, popSize - 1) #Randint is inclusive
+                #Make sure we don't start with ourselves
+                if(startIndex == i):
+                    startIndex = (startIndex + 1)%popSize
+                pairIndex = startIndex
+                while True:
+                    #Don't mate with itself
+                    if(pairIndex == i):
+                        pairIndex = (pairIndex + 1)%popSize
+                        continue
+                    #Try to mate
+                    if(agent.getHistoryDistance(breedingPopulation.agentList[pairIndex].history) < learningSettings.choosinessLimit):
+                        newPopulation.agentList.append(agent.cross(breedingPopulation.agentList[pairIndex]))
+                        break
+                    #If we've checked all mates, then give up
+                    if(pairIndex == startIndex):
+                        break
+                    #Go to the next potential mate
                     pairIndex = (pairIndex + 1)%popSize
-                    continue
-                #Try to mate
-                if(agent.getHistoryDistance(breedingPopulation.agentList[pairIndex].history) < learningSettings.choosinessLimit):
-                    newPopulation.agentList.append(agent.cross(breedingPopulation.agentList[pairIndex]))
-                    break
-                #If we've checked all mates, then give up
-                if(pairIndex == startIndex):
-                    break
-                #Go to the next potential mate
-                pairIndex = (pairIndex + 1)%popSize
         #Remove the history of old agents
         for agent in breedingPopulation.agentList:
             agent.resetHistory()
