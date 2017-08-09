@@ -3,6 +3,7 @@ import random
 OBJECTIVE = 0
 NOVELTY = 1
 COMBINED = 2
+SPECIATION = 3
 
 #Returns a parent based on tournament selection
 def TournamentSelect(agentList, tournamentSize, selectionCriteria):

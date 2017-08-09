@@ -1,20 +1,21 @@
 from evolution import selection
 
 class learningSettings:
-    useGraphics = False
+    useGraphics = True
+    useSimpleWalkers = False
 
-    selectionCriteria = selection.NOVELTY
+    selectionCriteria = selection.SPECIATION
     fileName = 'Test'
 
     secondsPerRun = 10
-    walkerCount = 100
+    walkerCount = 20
     numberOfGenerations = 100
     numberOfExperiments = 1
 
     #Speciation
-    initialEnergy = 5
+    initialEnergy = 3
     foodCount = 10
     foodUses = 5
-    foodEnergy = 5
+    foodEnergy = 3
 
-    choosinessLimit = secondsPerRun * .6
+    choosinessLimit = secondsPerRun * .5

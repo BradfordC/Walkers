@@ -47,6 +47,10 @@ class Agent:
     def addToHistory(self, stateArray):
         self.history.append(stateArray)
 
+    #Remove old history
+    def resetHistory(self):
+        self.history = []
+
     #Compare the two agents' histories to see how different the two are
     def getHistoryDistance(self, otherAgentHistory):
         if(len(self.history) != len (otherAgentHistory)):

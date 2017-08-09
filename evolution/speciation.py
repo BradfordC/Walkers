@@ -8,8 +8,8 @@ class Environment:
 
     #Have all current agents attempt to eat and mate, passing themselves to the next generation as well if they survive
     def generateNextPopulation(self, oldPopulation):
-        breedingPopulation = population()
-        newPopulation = population()
+        breedingPopulation = population.Population()
+        newPopulation = population.Population()
 
         oldPopulation.sortByFitness()
         #Feed
@@ -33,24 +33,28 @@ class Environment:
         for i in range(popSize):
             agent = breedingPopulation.agentList[i]
             #Find a random mate that is compatible
-            startIndex = random.randint(0, popSize)
+            startIndex = random.randint(0, popSize - 1) #Randint is inclusive
             #Make sure we don't start with ourselves
             if(startIndex == i):
-                startIndex = startIndex + 1
+                startIndex = (startIndex + 1)%popSize
             pairIndex = startIndex
             while True:
                 #Don't mate with itself
                 if(pairIndex == i):
+                    pairIndex = (pairIndex + 1)%popSize
                     continue
                 #Try to mate
-                if(agent.getHistoryDistance(breedingPopulation.agentList[pairIndex]) < learningSettings.choosinessLimit):
+                if(agent.getHistoryDistance(breedingPopulation.agentList[pairIndex].history) < learningSettings.choosinessLimit):
                     newPopulation.agentList.append(agent.cross(breedingPopulation.agentList[pairIndex]))
                     break
-                #Go to the next potential mate
-                pairIndex = (pairIndex + 1)%popSize
                 #If we've checked all mates, then give up
                 if(pairIndex == startIndex):
                     break
+                #Go to the next potential mate
+                pairIndex = (pairIndex + 1)%popSize
+        #Remove the history of old agents
+        for agent in breedingPopulation.agentList:
+            agent.resetHistory()
 
         return newPopulation
 

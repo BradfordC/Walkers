@@ -42,7 +42,8 @@ class Population:
 
     #Calculate the fitness for each agent
     def calculateFitness(self, walkerList, selectionCriteria):
-        if(selectionCriteria == selection.OBJECTIVE):
+        if(selectionCriteria == selection.OBJECTIVE
+                   or selectionCriteria == selection.SPECIATION):
             self.setFitness(walkerList)
             print(str(self.getAverageFitness()) + "\t" + str(self.getHighestFitness()))
         elif(selectionCriteria == selection.NOVELTY):

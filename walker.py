@@ -7,6 +7,7 @@ class Walker:
         self.bodyList = []
         self.positionList = []
         self.jointList = []
+        self.jointLimits = []
 
         #Keep track of the torso index, to attach body parts to it and to be able to track its position during the test
         self.torsoIndex = -1
@@ -45,15 +46,23 @@ class Walker:
         self.bodyList.append(body)
         if(connectedBodyIndex >= 0):
             #Connect the joint at the top middle of this object, plus any offset
+            lowerLimit = jointLimits[0] / 180 * b2_pi  #Convert degrees to radians
+            upperLimit = jointLimits[1] / 180 * b2_pi  #Convert degrees to radians
             joint = world.CreateRevoluteJoint(bodyA=self.bodyList[connectedBodyIndex],
                                               bodyB=body,
                                               anchor=(position[0] + jointOffset[0], position[1] + box[1] + jointOffset[1]),
-                                              lowerAngle =jointLimits[0] / 180 * b2_pi,  #Convert degrees to radians
-                                              upperAngle =jointLimits[1] / 180 * b2_pi,  #Convert degrees to radians
+                                              lowerAngle = lowerLimit,
+                                              upperAngle = upperLimit,
                                               enableLimit = True,
                                               maxMotorTorque = 500.0,
                                               enableMotor = True)
             self.jointList.append(joint)
+            self.jointLimits.append((lowerLimit, upperLimit))
+
+    #Remove the walker from the world
+    def removeWalker(self, world):
+        for body in self.bodyList:
+            world.DestroyBody(body)
 
     #Get an array of the current joint angles
     def getJointAngles(self):
@@ -65,8 +74,9 @@ class Walker:
     #Get an array of random possible joint angles
     def getRandomJointAngles(self):
         jointAngles = []
-        for joint in self.jointList:
-            jointAngles.append(random.uniform(joint.lowerAngle, joint.upperAngle))
+        for i in range(len(self.jointList)):
+            joint = self.jointList[i]
+            jointAngles.append(random.uniform(self.jointLimits[i][0], self.jointLimits[i][1]))
         return jointAngles
 
     #Set the forces on the joints
