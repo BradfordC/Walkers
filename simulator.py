@@ -56,6 +56,12 @@ class Simulator(Framework):
             self.world.Step(1 / settings.hz, settings.velocityIterations, settings.positionIterations)
             self.world.ClearForces()
 
+        #If everyone has died, stop the experiment
+        if(len(self.population.agentList) == 0):
+            print("All agents have died.")
+            self.afterExperiment(settings)
+            return
+
         #Advance all walkers
         for i in range(len(self.walkerList)):
             walker = self.walkerList[i]
@@ -102,7 +108,11 @@ class Simulator(Framework):
         if(learningSettings.selectionCriteria != selection.SPECIATION):
             self.population = self.population.makeNextPopulation(self.walkerList, learningSettings.selectionCriteria)
         else:
-            self.population = self.environment.generateNextPopulation(self.population)
+            if(generationNum % learningSettings.runsBetweenBreeding == 0):
+                self.population = self.environment.generateNextPopulation(self.population)
+            else:
+                for agent in self.population.agentList:
+                    agent.resetHistory()
             self.environment.generateAllFood(self.walkerList[0],
                                              learningSettings.foodCount,
                                              learningSettings.foodUses,

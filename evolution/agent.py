@@ -9,8 +9,8 @@ class Agent:
         self.fitness = 0
         self.novelty = 0
         #Speciation variables
-        self.maxEnergy = learningSettings.initialEnergy
-        self.energy = self.maxEnergy
+        self.maxEnergy = learningSettings.maxEnergy
+        self.energy = learningSettings.initialEnergy
         #History of the agent during its generation, used for similarity testing
         self.history = []
 
