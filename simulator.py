@@ -6,6 +6,7 @@ from evolution.population import Population
 from evolution import selection, speciation
 from learningSettings import learningSettings
 from fileHandling import fileHandler
+import time
 
 
 class Simulator(Framework):
@@ -113,10 +114,13 @@ class Simulator(Framework):
             else:
                 for agent in self.population.agentList:
                     agent.resetHistory()
-            self.environment.generateAllFood(self.walkerList[0],
-                                             learningSettings.foodCount,
-                                             learningSettings.foodUses,
-                                             learningSettings.foodEnergy)
+            if(learningSettings.staticFood):
+                self.environment.refillAllFood()
+            else:
+                self.environment.generateAllFood(self.walkerList[0],
+                                                 learningSettings.foodCount,
+                                                 learningSettings.foodUses,
+                                                 learningSettings.foodEnergy)
         self.updateWalkers()
 
 

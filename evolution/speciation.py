@@ -13,15 +13,20 @@ class Environment:
 
         oldPopulation.sortByFitness()
         #Feed
+        sum = 0
+        maxA = 0
         for agent in oldPopulation.agentList:
-            #Look for food that it can eat
-            ateFood = False
-            for food in self.foodList:
-                if(agent.eatFood(food)):
-                    ateFood = True
-                    break
-            if(not ateFood):
-                agent.energy = agent.energy - 1
+            avgDist = self.tryToFeed(agent)
+            sum += avgDist
+            maxA = max(maxA, avgDist)
+        print(sum / len(oldPopulation.agentList))
+        print(maxA)
+        sum = 0
+        for i in range(len(oldPopulation.agentList)):
+            for j in range(i + 1, len(oldPopulation.agentList)):
+                sum += 2 * oldPopulation.agentList[i].getHistoryDistance(oldPopulation.agentList[j].history)
+        print((sum / len(oldPopulation.agentList)/len(oldPopulation.agentList)))
+        print()
         #Migrate any agents that survived
         for agent in oldPopulation.agentList:
             if(agent.energy > 0):
@@ -45,7 +50,7 @@ class Environment:
                         pairIndex = (pairIndex + 1)%popSize
                         continue
                     #Try to mate
-                    if(agent.getHistoryDistance(breedingPopulation.agentList[pairIndex].history) < learningSettings.choosinessLimit):
+                    if(agent.getHistoryDistance(breedingPopulation.agentList[pairIndex].history) < learningSettings.choosinessLimitMate):
                         newPopulation.agentList.append(agent.cross(breedingPopulation.agentList[pairIndex]))
                         break
                     #If we've checked all mates, then give up
@@ -58,6 +63,22 @@ class Environment:
             agent.resetHistory()
 
         return newPopulation
+
+    #Have the agent try to eat some food
+    def tryToFeed(self, agent):
+        #Look for food that it can eat
+        ateFood = False
+        sumDistance = 0
+        for food in self.foodList:
+            if(agent.eatFood(food)):
+                ateFood = True
+                break
+        if(not ateFood):
+            agent.energy = agent.energy - 1
+
+        for food in self.foodList:
+            sumDistance += agent.getHistoryDistance(food.history)
+        return sumDistance / len(self.foodList)
 
     #Create a single instance of food
     def generateSingleFood(sampleWalker, arraySize):
@@ -90,7 +111,7 @@ class Food:
 
     #See if the agent is able to eat this food
     def canBeEaten(self, agent):
-        return (self.remainingUses > 0) and (agent.getHistoryDistance(self.history) < learningSettings.choosinessLimit)
+        return (self.remainingUses > 0) and (agent.getHistoryDistance(self.history) < learningSettings.choosinessLimitFood)
 
     def refill(self):
         self.remainingUses = self.maxUses

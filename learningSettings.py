@@ -5,21 +5,24 @@ class learningSettings:
     useSimpleWalkers = False
 
     selectionCriteria = selection.SPECIATION
-    fileName = 'Test'
+    fileName = 'Speciation'
 
-    secondsPerRun = 5
+    secondsPerRun = 7
     walkerCount = 100
     numberOfGenerations = 100
-    numberOfExperiments = 1
+    numberOfExperiments = 2
 
     #Speciation
+    staticFood = False
+
     maxEnergy = 5
     initialEnergy = 1
 
-    foodCount = 1000
-    foodUses = 5
-    foodEnergy = 2
+    foodCount = 50
+    foodUses = 3
+    foodEnergy = 1
 
     runsBetweenBreeding = 1
 
-    choosinessLimit = secondsPerRun * .5
+    choosinessLimitFood = secondsPerRun * .8
+    choosinessLimitMate = secondsPerRun * .5
