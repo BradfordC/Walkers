@@ -1,16 +1,16 @@
 from evolution import selection
 
 class learningSettings:
-    useGraphics = False
+    useGraphics = True
     useSimpleWalkers = False
 
-    selectionCriteria = selection.SPECIATION
-    fileName = 'Speciation'
+    selectionCriteria = selection.OBJECTIVE
+    fileName = 'Test'
 
     secondsPerRun = 7
-    walkerCount = 100
+    walkerCount = 5
     numberOfGenerations = 100
-    numberOfExperiments = 2
+    numberOfExperiments = 1
 
     #Speciation
     staticFood = False
@@ -18,7 +18,7 @@ class learningSettings:
     maxEnergy = 5
     initialEnergy = 1
 
-    foodCount = 50
+    foodCount = 100
     foodUses = 3
     foodEnergy = 1
 

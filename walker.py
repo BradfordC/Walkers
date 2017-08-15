@@ -31,11 +31,11 @@ class Walker:
         #Leg 1
         self.__addBodyPart(world, (.5, 1.5), (0, 5.5), torsoIndex, (-45, 90))
         self.__addBodyPart(world, (.5, 1.5), (0, 2.5), len(self.bodyList) - 1, (-90, 0))
-        self.__addBodyPart(world, (1, .25), (0.5, .75), len(self.bodyList) - 1, (-45, 45), (-.5, 0))
+        self.__addBodyPart(world, (1, .25), (0.25, .75), len(self.bodyList) - 1, (-45, 45), (-.25, 0))
         #Leg 2
         self.__addBodyPart(world, (.5, 1.5), (0, 5.5), torsoIndex, (-45, 90))
         self.__addBodyPart(world, (.5, 1.5), (0, 2.5), len(self.bodyList) - 1, (-90, 0))
-        self.__addBodyPart(world, (1, .25), (0.5, .75), len(self.bodyList) - 1, (-45, 45), (-.5, 0))
+        self.__addBodyPart(world, (1, .25), (0.25, .75), len(self.bodyList) - 1, (-45, 45), (-.25, 0))
 
         self.resetPosition()
 
