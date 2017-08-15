@@ -1,5 +1,6 @@
 from networks import network
 from evolution import agent, selection
+from learningSettings import learningSettings
 
 import random
 
@@ -66,7 +67,7 @@ class Population:
             #Pick a mate that isn't itself
             mate = i
             while(mate == i):
-                mate = selection.TournamentSelect(self.agentList, 3, selectionCriteria)
+                mate = selection.TournamentSelect(self.agentList, learningSettings.tournamentSize, selectionCriteria)
             #Crossover with mate
             nextPopulation.agentList[i] = self.agentList[i].cross(self.agentList[mate])
         #Small chance of mutations

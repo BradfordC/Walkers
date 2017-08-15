@@ -1,16 +1,18 @@
 from evolution import selection
 
 class learningSettings:
-    useGraphics = True
+    useGraphics = False
     useSimpleWalkers = False
 
     selectionCriteria = selection.OBJECTIVE
-    fileName = 'Test'
+    fileName = 'HeelTest'
 
     secondsPerRun = 7
-    walkerCount = 5
+    walkerCount = 100
     numberOfGenerations = 100
     numberOfExperiments = 1
+
+    tournamentSize = 3
 
     #Speciation
     staticFood = False
