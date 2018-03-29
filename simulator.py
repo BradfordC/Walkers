@@ -22,6 +22,9 @@ class Simulator(Framework):
 
         self.fileHandler = fileHandler(learningSettings.fileName)
 
+        self.secondsElapsed = 0
+        self.generationsElapsed = 0
+
         self.Setup()
 
     def Setup(self):
@@ -79,36 +82,39 @@ class Simulator(Framework):
             self.afterSecond(settings)
 
         #Deal with the end of a generation
-        if (self.stepCount % (learningSettings.secondsPerRun * settings.hz)) == 0:
+        if (self.secondsElapsed == learningSettings.secondsPerRun):
             self.afterGeneration(settings)
+            self.secondsElapsed = 0
             print(len(self.population.agentList))
 
         #Deal with end of experiment
-        if (self.stepCount == learningSettings.secondsPerRun * settings.hz * learningSettings.numberOfGenerations):
+        if (self.generationsElapsed == learningSettings.numberOfGenerations):
             self.afterExperiment(settings)
+            self.generationsElapsed = 0
 
     #What to do each second
     def afterSecond(self, settings):
         #Add each agent's state to its history
         for i in range(len(self.population.agentList)):
             self.population.agentList[i].addToHistory(self.walkerList[i].getJointAngles())
+        self.secondsElapsed += 1
 
     #What to do each generation
     def afterGeneration(self, settings):
+        self.generationsElapsed += 1
         #Calculate the fitness for everyone
-        generationNum = (int) (self.stepCount / (learningSettings.secondsPerRun * settings.hz))
-        print(str(generationNum) + ": ", end="")
+        print(str(self.generationsElapsed) + ": ", end="")
         self.population.calculateFitness(self.walkerList, learningSettings.selectionCriteria)
         #Print the average and best positions
         averageAndBestPositions = self.getAverageAndBestPositions()
         averagePosition = averageAndBestPositions[0]
         bestPosition = averageAndBestPositions[1]
-        self.fileHandler.write(str(generationNum) + ',' + str(averagePosition) + ',' + str(bestPosition) + '\n')
+        self.fileHandler.write(str(self.generationsElapsed) + ',' + str(averagePosition) + ',' + str(bestPosition) + '\n')
         #Make the next generation
         if(learningSettings.selectionCriteria != selection.SPECIATION):
             self.population = self.population.makeNextPopulation(self.walkerList, learningSettings.selectionCriteria)
         else:
-            if(generationNum % learningSettings.runsBetweenBreeding == 0):
+            if(self.generationsElapsed % learningSettings.runsBetweenBreeding == 0):
                 self.population = self.environment.generateNextPopulation(self.population)
             else:
                 for agent in self.population.agentList:
