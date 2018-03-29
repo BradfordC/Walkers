@@ -34,7 +34,7 @@ class Simulator(Framework):
 
         #Make some walkers
         self.walkerList = []
-        for i in range(learningSettings.walkerCount):
+        for i in range(learningSettings.groupSize):
             self.walkerList.append(Walker(self.world, i*10, learningSettings.useSimpleWalkers))
 
         #Make a population of agents
@@ -132,7 +132,7 @@ class Simulator(Framework):
         self.fileHandler.write(str(self.generationsElapsed) + ',' + str(averagePosition) + ',' + str(bestPosition) + '\n')
         #Make the next generation
         if(learningSettings.selectionCriteria != selection.SPECIATION):
-            self.population = self.population.makeNextPopulation(self.walkerList, learningSettings.selectionCriteria)
+            self.population = self.population.makeNextPopulation(learningSettings.selectionCriteria)
         else:
             if((self.generationsElapsed + 1) % learningSettings.runsBetweenBreeding == 0):
                 self.population = self.environment.generateNextPopulation(self.population)
@@ -146,7 +146,7 @@ class Simulator(Framework):
                                                  learningSettings.foodCount,
                                                  learningSettings.foodUses,
                                                  learningSettings.foodEnergy)
-        self.updateWalkers()
+        self.resetWalkers()
         self.generationsElapsed += 1
         self.groupsElapsed = 0
 
@@ -171,25 +171,16 @@ class Simulator(Framework):
         positionSum = 0
         bestPosition = -90
         for walker in self.walkerList:
-            walkerPosition = walker.getTorsoPosition()[0]
+            walkerPosition = walker.getTorsoPosition()[0] - walker.startingXOffset
             positionSum += walkerPosition
             bestPosition = max(bestPosition, walkerPosition)
         averagePosition = positionSum / len(self.walkerList)
         return (averagePosition, bestPosition)
 
-    def updateWalkers(self):
-        popSize = self.population.size()
-        #If there's more walkers than agents, remove the extra walkers
-        while(len(self.walkerList) > popSize):
-            self.walkerList[-1].removeWalker(self.world)
-            del(self.walkerList[-1])
+    def resetWalkers(self):
         #Reset all walkers
         for walker in self.walkerList:
             walker.resetPosition()
-        #If we need more walkers, add them now
-        if(len(self.walkerList) < popSize):
-            for i in range(popSize - len(self.walkerList)):
-                self.walkerList.append(Walker(self.world, learningSettings.useSimpleWalkers))
 
 
 

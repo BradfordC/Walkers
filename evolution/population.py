@@ -57,7 +57,7 @@ class Population:
 
 
     #Cross agents to create another population
-    def makeNextPopulation(self, walkerList, selectionCriteria):
+    def makeNextPopulation(self, selectionCriteria):
         nextPopulation = Population(len(self.agentList), self.agentList[0].network)
         for i in range(len(self.agentList)):
             #Pick a mate that isn't itself

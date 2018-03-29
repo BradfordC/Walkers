@@ -8,9 +8,9 @@ class learningSettings:
     fileName = 'Test'
 
     secondsPerRun = 3
-    walkerCount = 10
-    groupSize = walkerCount
-    numberOfGenerations = 10
+    walkerCount = 500
+    groupSize = 10
+    numberOfGenerations = 5
     numberOfExperiments = 1
 
     tournamentSize = 3
