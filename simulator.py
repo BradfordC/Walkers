@@ -50,8 +50,6 @@ class Simulator(Framework):
                                              learningSettings.foodUses,
                                              learningSettings.foodEnergy)
 
-
-
     def Step(self, settings):
         if(self.showGraphics):
             super(Simulator, self).Step(settings)
@@ -68,23 +66,28 @@ class Simulator(Framework):
 
         #Advance all walkers
         for i in range(len(self.walkerList)):
+            agent = self.findAgentForWalker(i, learningSettings.groupSize)
+            # If we had extra walkers, don't try to deal with their agents
+            if (agent is None):
+                break
+
             walker = self.walkerList[i]
             #Angle and height of torso
             input = [walker.getTorsoAngle(), walker.getTorsoPosition()[1] / 10.0]
             input.extend(walker.getJointAngles())
 
-            network = self.population.agentList[i].network
+            network = agent.network
             networkOutput = network.Feedforwad(input)
             jointForces = [(i - .5)*25 for i in networkOutput]
             walker.setJointForces(jointForces)
 
         #Do this every second
         if (self.stepCount % settings.hz) == 0:
-            self.afterSecond(settings)
+            self.afterSecond(settings, learningSettings.groupSize)
 
         #Deal with the end of a group
         if (self.secondsElapsed == learningSettings.secondsPerRun):
-            self.afterGroup(settings)
+            self.afterGroup(settings, learningSettings.groupSize)
             self.secondsElapsed = 0
 
         #Deal with the end of a generation
@@ -99,14 +102,24 @@ class Simulator(Framework):
             self.generationsElapsed = 0
 
     #What to do each second
-    def afterSecond(self, settings):
-        #Add each agent's state to its history
-        for i in range(len(self.population.agentList)):
-            self.population.agentList[i].addToHistory(self.walkerList[i].getJointAngles())
+    def afterSecond(self, settings, groupSize):
         self.secondsElapsed += 1
+        #Add each walker's state to its agent's history
+        for i in range(len(self.walkerList)):
+            agent = self.findAgentForWalker(i, groupSize)
+            #If we had extra walkers, don't try to deal with their agents
+            if(agent is None):
+                break
+            agent.addToHistory(self.walkerList[i].getJointAngles())
 
     #What to do after each group
-    def afterGroup(self, settings):
+    def afterGroup(self, settings, groupSize):
+        for i in range(len(self.walkerList)):
+            agent = self.findAgentForWalker(i, groupSize)
+            #If we had extra walkers, don't try to deal with their agents
+            if(agent is None):
+                break
+            agent.fitness = self.walkerList[i].getTorsoPosition()[0] - self.walkerList[i].startingXOffset
         self.groupsElapsed += 1
 
     #What to do each generation
@@ -114,7 +127,7 @@ class Simulator(Framework):
         self.generationsElapsed += 1
         #Calculate the fitness for everyone
         print(str(self.generationsElapsed) + ": ", end="")
-        self.population.calculateFitness(self.walkerList, learningSettings.selectionCriteria)
+        self.population.calculateFitness(learningSettings.selectionCriteria)
         #Print the average and best positions
         averageAndBestPositions = self.getAverageAndBestPositions()
         averagePosition = averageAndBestPositions[0]
@@ -146,6 +159,14 @@ class Simulator(Framework):
             exit()
         else:
             self.__init__(False)
+
+    #Find the agent currently driving this walker for this group
+    def findAgentForWalker(self, walkerIndex, groupSize):
+        agentIndex = self.groupsElapsed * groupSize + walkerIndex
+        #If the walker wasn't actually being driven by anything, return None
+        if(agentIndex >= self.population.size()):
+            return None
+        return self.population.agentList[agentIndex]
 
     def getAverageAndBestPositions(self):
         positionSum = 0

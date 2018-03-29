@@ -20,12 +20,6 @@ class Population:
     def size(self):
         return len(self.agentList)
 
-    #Set the fitness of all agents
-    def setFitness(self, walkerList):
-        for i in range(len(self.agentList)):
-            walkerPosition = walkerList[i].getTorsoPosition()
-            self.agentList[i].fitness = walkerPosition[0] - walkerList[i].startingXOffset
-
     #Find out how novel each agent is
     def setNovelty(self):
         #Make sure all novelties are set to 0, since we'll be adding to them
@@ -46,16 +40,14 @@ class Population:
             agent.novelty /= len(self.agentList)
 
     #Calculate the fitness for each agent
-    def calculateFitness(self, walkerList, selectionCriteria):
+    def calculateFitness(self, selectionCriteria):
         if(selectionCriteria == selection.OBJECTIVE
                    or selectionCriteria == selection.SPECIATION):
-            self.setFitness(walkerList)
             print(str(self.getAverageFitness()) + "\t" + str(self.getHighestFitness()))
         elif(selectionCriteria == selection.NOVELTY):
             self.setNovelty()
             print(self.getHighestNovelty())
         elif(selectionCriteria == selection.COMBINED):
-            self.setFitness(walkerList)
             self.setNovelty()
             print(str(self.getAverageFitness()) + "\t" + str(self.getHighestFitness()))
 
