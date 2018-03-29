@@ -6,7 +6,6 @@ from evolution.population import Population
 from evolution import selection, speciation
 from learningSettings import learningSettings
 from fileHandling import fileHandler
-import time
 
 
 class Simulator(Framework):
@@ -27,12 +26,12 @@ class Simulator(Framework):
 
     def Setup(self):
         #Create the ground
-        self.world.CreateStaticBody(position=(0, -10), shapes=b2PolygonShape(box=(50, 10)))
+        self.world.CreateStaticBody(position=(0, -10), shapes=b2PolygonShape(box=(10000, 10)))
 
         #Make some walkers
         self.walkerList = []
         for i in range(learningSettings.walkerCount):
-            self.walkerList.append(Walker(self.world, learningSettings.useSimpleWalkers))
+            self.walkerList.append(Walker(self.world, i*10, learningSettings.useSimpleWalkers))
 
         #Make a population of agents
         jointCount = len(self.walkerList[0].jointList)

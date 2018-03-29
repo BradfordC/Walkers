@@ -3,11 +3,14 @@ import random
 
 
 class Walker:
-    def __init__(self, world, isSimple=False):
+    def __init__(self, world, startingXOffset, isSimple=False):
         self.bodyList = []
         self.positionList = []
         self.jointList = []
         self.jointLimits = []
+
+        #Include an offset so that walkers don't overlap, which speeds things up
+        self.startingXOffset = startingXOffset
 
         #Keep track of the torso index, to attach body parts to it and to be able to track its position during the test
         self.torsoIndex = -1
@@ -97,7 +100,9 @@ class Walker:
         for i in range(len(self.bodyList)):
             body = self.bodyList[i]
 
-            body.transform = [self.positionList[i], 0]
+            adjustedPosition = [self.positionList[i][0] + self.startingXOffset, self.positionList[i][1]]
+
+            body.transform = [adjustedPosition, 0]
             body.linearVelocity = (0, 0)
             body.angularVelocity = 0
 

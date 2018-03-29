@@ -20,7 +20,7 @@ class Population:
     def setFitness(self, walkerList):
         for i in range(len(self.agentList)):
             walkerPosition = walkerList[i].getTorsoPosition()
-            self.agentList[i].fitness = walkerPosition[0]# + walkerPosition[1]
+            self.agentList[i].fitness = walkerPosition[0] - walkerList[i].startingXOffset
 
     #Find out how novel each agent is
     def setNovelty(self):
