@@ -16,6 +16,10 @@ class Population:
                 nextAgent = agent.Agent(nextNetwork)
                 self.agentList.append(nextAgent)
 
+    #Return the size of the population
+    def size(self):
+        return len(self.agentList)
+
     #Set the fitness of all agents
     def setFitness(self, walkerList):
         for i in range(len(self.agentList)):

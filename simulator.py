@@ -23,6 +23,7 @@ class Simulator(Framework):
         self.fileHandler = fileHandler(learningSettings.fileName)
 
         self.secondsElapsed = 0
+        self.groupsElapsed = 0
         self.generationsElapsed = 0
 
         self.Setup()
@@ -81,11 +82,16 @@ class Simulator(Framework):
         if (self.stepCount % settings.hz) == 0:
             self.afterSecond(settings)
 
-        #Deal with the end of a generation
+        #Deal with the end of a group
         if (self.secondsElapsed == learningSettings.secondsPerRun):
-            self.afterGeneration(settings)
+            self.afterGroup(settings)
             self.secondsElapsed = 0
-            print(len(self.population.agentList))
+
+        #Deal with the end of a generation
+        if (self.groupsElapsed * learningSettings.groupSize >= self.population.size()):
+            self.afterGeneration(settings)
+            self.groupsElapsed = 0
+            print(self.population.size())
 
         #Deal with end of experiment
         if (self.generationsElapsed == learningSettings.numberOfGenerations):
@@ -98,6 +104,10 @@ class Simulator(Framework):
         for i in range(len(self.population.agentList)):
             self.population.agentList[i].addToHistory(self.walkerList[i].getJointAngles())
         self.secondsElapsed += 1
+
+    #What to do after each group
+    def afterGroup(self, settings):
+        self.groupsElapsed += 1
 
     #What to do each generation
     def afterGeneration(self, settings):

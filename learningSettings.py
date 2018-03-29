@@ -5,11 +5,12 @@ class learningSettings:
     useSimpleWalkers = False
 
     selectionCriteria = selection.OBJECTIVE
-    fileName = 'HeelTest'
+    fileName = 'Test'
 
-    secondsPerRun = 7
-    walkerCount = 100
-    numberOfGenerations = 100
+    secondsPerRun = 3
+    walkerCount = 10
+    groupSize = walkerCount
+    numberOfGenerations = 10
     numberOfExperiments = 1
 
     tournamentSize = 3
