@@ -59,7 +59,7 @@ class Simulator(Framework):
             self.world.ClearForces()
 
         #If everyone has died, stop the experiment
-        if(len(self.population.agentList) == 0):
+        if(self.population.size() == 0):
             print("All agents have died.")
             self.afterExperiment(settings)
             return
@@ -88,22 +88,18 @@ class Simulator(Framework):
         #Deal with the end of a group
         if (self.secondsElapsed == learningSettings.secondsPerRun):
             self.afterGroup(settings, learningSettings.groupSize)
-            self.secondsElapsed = 0
 
         #Deal with the end of a generation
         if (self.groupsElapsed * learningSettings.groupSize >= self.population.size()):
             self.afterGeneration(settings)
-            self.groupsElapsed = 0
             print(self.population.size())
 
         #Deal with end of experiment
         if (self.generationsElapsed == learningSettings.numberOfGenerations):
             self.afterExperiment(settings)
-            self.generationsElapsed = 0
 
     #What to do each second
     def afterSecond(self, settings, groupSize):
-        self.secondsElapsed += 1
         #Add each walker's state to its agent's history
         for i in range(len(self.walkerList)):
             agent = self.findAgentForWalker(i, groupSize)
@@ -111,6 +107,7 @@ class Simulator(Framework):
             if(agent is None):
                 break
             agent.addToHistory(self.walkerList[i].getJointAngles())
+        self.secondsElapsed += 1
 
     #What to do after each group
     def afterGroup(self, settings, groupSize):
@@ -121,10 +118,10 @@ class Simulator(Framework):
                 break
             agent.fitness = self.walkerList[i].getTorsoPosition()[0] - self.walkerList[i].startingXOffset
         self.groupsElapsed += 1
+        self.secondsElapsed = 0
 
     #What to do each generation
     def afterGeneration(self, settings):
-        self.generationsElapsed += 1
         #Calculate the fitness for everyone
         print(str(self.generationsElapsed) + ": ", end="")
         self.population.calculateFitness(learningSettings.selectionCriteria)
@@ -137,7 +134,7 @@ class Simulator(Framework):
         if(learningSettings.selectionCriteria != selection.SPECIATION):
             self.population = self.population.makeNextPopulation(self.walkerList, learningSettings.selectionCriteria)
         else:
-            if(self.generationsElapsed % learningSettings.runsBetweenBreeding == 0):
+            if((self.generationsElapsed + 1) % learningSettings.runsBetweenBreeding == 0):
                 self.population = self.environment.generateNextPopulation(self.population)
             else:
                 for agent in self.population.agentList:
@@ -150,6 +147,8 @@ class Simulator(Framework):
                                                  learningSettings.foodUses,
                                                  learningSettings.foodEnergy)
         self.updateWalkers()
+        self.generationsElapsed += 1
+        self.groupsElapsed = 0
 
 
     #What to do at the end of the experiment
@@ -179,7 +178,7 @@ class Simulator(Framework):
         return (averagePosition, bestPosition)
 
     def updateWalkers(self):
-        popSize = len(self.population.agentList)
+        popSize = self.population.size()
         #If there's more walkers than agents, remove the extra walkers
         while(len(self.walkerList) > popSize):
             self.walkerList[-1].removeWalker(self.world)
