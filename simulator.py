@@ -126,10 +126,10 @@ class Simulator(Framework):
         print(str(self.generationsElapsed) + ": ", end="")
         self.population.calculateFitness(learningSettings.selectionCriteria)
         #Print the average and best positions
-        averageAndBestPositions = self.getAverageAndBestPositions()
-        averagePosition = averageAndBestPositions[0]
-        bestPosition = averageAndBestPositions[1]
-        self.fileHandler.write(str(self.generationsElapsed) + ',' + str(averagePosition) + ',' + str(bestPosition) + '\n')
+        averageAndBestFitness = self.getAverageAndBestFitness()
+        averageFitness = averageAndBestFitness[0]
+        bestFitness = averageAndBestFitness[1]
+        self.fileHandler.write(str(self.generationsElapsed) + ',' + str(averageFitness) + ',' + str(bestFitness) + '\n')
         #Make the next generation
         if(learningSettings.selectionCriteria != selection.SPECIATION):
             self.population = self.population.makeNextPopulation(learningSettings.selectionCriteria)
@@ -167,15 +167,14 @@ class Simulator(Framework):
             return None
         return self.population.agentList[agentIndex]
 
-    def getAverageAndBestPositions(self):
-        positionSum = 0
-        bestPosition = -90
-        for walker in self.walkerList:
-            walkerPosition = walker.getTorsoPosition()[0] - walker.startingXOffset
-            positionSum += walkerPosition
-            bestPosition = max(bestPosition, walkerPosition)
-        averagePosition = positionSum / len(self.walkerList)
-        return (averagePosition, bestPosition)
+    def getAverageAndBestFitness(self):
+        fitnessSum = 0
+        bestFitness = -90
+        for agent in self.population.agentList:
+            fitnessSum += agent.fitness
+            bestFitness = max(bestFitness, agent.fitness)
+        averageFitness = fitnessSum / self.population.size()
+        return (averageFitness, bestFitness)
 
     def resetWalkers(self):
         #Reset all walkers
