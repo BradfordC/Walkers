@@ -1,6 +1,7 @@
 from networks import network
 from evolution import agent, selection
 from learningSettings import learningSettings
+import pickle
 
 import random
 
@@ -105,4 +106,12 @@ class Population:
             if(random.random() < mutationChance):
                 agent.mutate()
 
+    #Save the current population to a file
+    def saveToFile(self, fileName):
+        with open(fileName, 'wb') as file:
+            pickle.dump(self.agentList, file, pickle.HIGHEST_PROTOCOL)
 
+    #Load agents from a file
+    def loadFromFile(self, fileName):
+        with open(fileName, 'rb') as file:
+            self.agentList = pickle.load(file)

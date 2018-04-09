@@ -154,6 +154,7 @@ class Simulator(Framework):
     #What to do at the end of the experiment
     def afterExperiment(self, settings):
         Simulator.experimentCount += 1
+        self.population.saveToFile(self.fileHandler.popSaveName)
         if(Simulator.experimentCount >= learningSettings.numberOfExperiments):
             exit()
         else:
