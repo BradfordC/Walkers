@@ -1,4 +1,5 @@
 from networks.network import Network
+from evolution.crossover import Crossover
 import random
 import numpy as np
 from learningSettings import learningSettings
@@ -21,19 +22,7 @@ class Agent:
             otherLayer = otherAgent.network.Layers[i]
             childLayer = childNetwork.Layers[i]
 
-            #For each row of weights, pick a random point
-            #The weights before that point come from this parent, the ones after come from the other
-            for row in range(len(thisLayer.Weights)):
-                thisLayerRow = thisLayer.Weights[row]
-                otherLayerRow = otherLayer.Weights[row]
-                childLayerRow = childLayer.Weights[row]
-
-                crossoverPoint = random.randint(1,len(thisLayer.Weights[row]) - 1)
-                for column in range(len(thisLayer.Weights[row])):
-                    if(column < crossoverPoint):
-                        childLayerRow[column] = thisLayerRow[column]
-                    else:
-                        childLayerRow[column] = otherLayerRow[column]
+            Crossover.crossRandomType(thisLayer, otherLayer, childLayer)
         return Agent(childNetwork)
 
     def mutate(self):
