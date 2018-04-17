@@ -1,19 +1,19 @@
 from evolution import selection
 
 class learningSettings:
-    useGraphics = False
+    useGraphics = True
     useSimpleWalkers = False
 
-    selectionCriteria = selection.OBJECTIVE
+    selectionCriteria = selection.NOVELTY
     fileName = 'Test'
 
-    secondsPerRun = 3
-    walkerCount = 500
-    groupSize = 10
-    numberOfGenerations = 5
+    secondsPerRun = 5
+    walkerCount = 100
+    groupSize = 25
+    numberOfGenerations = 10
     numberOfExperiments = 1
 
-    tournamentSize = 3
+    tournamentSize = 4
 
     #Speciation
     staticFood = False

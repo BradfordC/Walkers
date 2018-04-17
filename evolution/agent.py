@@ -1,5 +1,6 @@
 from networks.network import Network
 from evolution.crossover import Crossover
+from evolution.performance import Performance
 import random
 import numpy as np
 from learningSettings import learningSettings
@@ -7,13 +8,10 @@ from learningSettings import learningSettings
 class Agent:
     def __init__(self, network):
         self.network = network
-        self.fitness = 0
-        self.novelty = 0
+        self.performance = Performance()
         #Speciation variables
         self.maxEnergy = learningSettings.maxEnergy
         self.energy = learningSettings.initialEnergy
-        #History of the agent during its generation, used for similarity testing
-        self.history = []
 
     def cross(self, otherAgent):
         childNetwork = Network.fromNetwork(self.network)
@@ -34,38 +32,15 @@ class Agent:
 
     #Add an array of the current state of the agent
     def addToHistory(self, stateArray):
-        self.history.append(stateArray)
+        self.performance.history.append(stateArray)
 
     #Remove old history
     def resetHistory(self):
-        self.history = []
-
-    #Compare the two agents' histories to see how different the two are
-    def getHistoryDistance(self, otherAgentHistory):
-        if(len(self.history) != len (otherAgentHistory)):
-            print("Error: Histories are not the same size.")
-            return None
-
-        totalSquaredDifference = 0
-
-        #For each state, check the difference between all values
-        for stateIndex in range(len(self.history)):
-            myState = self.history[stateIndex]
-            otherState = otherAgentHistory[stateIndex]
-
-            if(len(myState) != len(otherState)):
-                print("Error: States are not the same size.")
-                return None
-
-            for i in range(len(myState)):
-                totalSquaredDifference += (myState[i] - otherState[i]) ** 2
-
-        distance = totalSquaredDifference ** 0.5
-        return distance
+        self.performance = Performance()
 
     #Used for sorting populations
     def getFitness(self):
-        return self.fitness
+        return self.performance.getFitness()
 
     #Eat food if possible
     def eatFood(self, food):

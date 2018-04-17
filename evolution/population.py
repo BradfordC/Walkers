@@ -2,7 +2,6 @@ from networks import network
 from evolution import agent, selection
 from learningSettings import learningSettings
 import pickle
-
 import random
 
 class Population:
@@ -21,41 +20,24 @@ class Population:
     def size(self):
         return len(self.agentList)
 
-    #Find out how novel each agent is
+    #Calculate the novelty for each agent in the population
     def setNovelty(self):
-        #Make sure all novelties are set to 0, since we'll be adding to them
-        for agent in self.agentList:
-            agent.novelty = 0
+        performanceList = [agent.performance for agent in self.agentList]
+        for performance in performanceList:
+            performance.setNovelty(performanceList)
 
-        #Novelty is based on the difference between an agent and all other agents
-        for i in range(len(self.agentList)):
-            for j in range(i + 1, len(self.agentList)):
-                firstAgent = self.agentList[i]
-                secondAgent = self.agentList[j]
-                difference = firstAgent.getHistoryDistance(secondAgent.history)
-                firstAgent.novelty += difference
-                secondAgent.novelty += difference
-
-        #Get the average novelty
-        for agent in self.agentList:
-            agent.novelty /= len(self.agentList)
-
-    #Calculate the fitness for each agent
-    def calculateFitness(self, selectionCriteria):
-        if(selectionCriteria == selection.OBJECTIVE
-                   or selectionCriteria == selection.SPECIATION):
+    #Print the score for each agent
+    def printScore(self, selectionCriteria):
+        if(selectionCriteria == selection.OBJECTIVE or selectionCriteria == selection.SPECIATION):
             print(str(self.getAverageFitness()) + "\t" + str(self.getHighestFitness()))
         elif(selectionCriteria == selection.NOVELTY):
-            self.setNovelty()
             print(self.getHighestNovelty())
         elif(selectionCriteria == selection.COMBINED):
-            self.setNovelty()
             print(str(self.getAverageFitness()) + "\t" + str(self.getHighestFitness()))
 
     #Sort the population so it starts with the agent with the highest fitness
     def sortByFitness(self):
         self.agentList.sort(key=agent.Agent.getFitness, reverse=True)
-
 
     #Cross agents to create another population
     def makeNextPopulation(self, selectionCriteria):
@@ -76,28 +58,28 @@ class Population:
     def getHighestFitness(self):
         highestFitness = -999999999
         for agent in self.agentList:
-            if(highestFitness < agent.fitness):
-                highestFitness = agent.fitness
+            if(highestFitness < agent.performance.getFitness()):
+                highestFitness = agent.performance.getFitness()
         return highestFitness
 
     def getAverageFitness(self):
         fitnessSum = 0
         for agent in self.agentList:
-            fitnessSum += agent.fitness
+            fitnessSum += agent.performance.getFitness()
         return fitnessSum / len(self.agentList)
 
     # Find the highest novelty value in the population
     def getHighestNovelty(self):
         highestNovelty = -999999999
         for agent in self.agentList:
-            if (highestNovelty < agent.novelty):
-                highestNovelty = agent.novelty
+            if (highestNovelty < agent.performance.getNovelty()):
+                highestNovelty = agent.performance.getNovelty()
         return highestNovelty
 
     def getAverageNovelty(self):
         noveltySum = 0
         for agent in self.agentList:
-            noveltySum += agent.novelty
+            noveltySum += agent.performance.getNovelty()
         return noveltySum / len(self.agentList)
 
     #Try to mutate all agents with a certain chance of mutation

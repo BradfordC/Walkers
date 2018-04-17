@@ -3,14 +3,15 @@ import random
 
 
 class Walker:
-    def __init__(self, world, startingXOffset, isSimple=False):
+    def __init__(self, world, startingOffset, isSimple=False):
         self.bodyList = []
         self.positionList = []
         self.jointList = []
         self.jointLimits = []
 
         #Include an offset so that walkers don't overlap, which speeds things up
-        self.startingXOffset = startingXOffset
+        self.startingOffset = startingOffset
+        self.startingPosition = None
 
         #Keep track of the torso index, to attach body parts to it and to be able to track its position during the test
         self.torsoIndex = -1
@@ -91,7 +92,9 @@ class Walker:
             print("ERROR: Size mismatch in setting joint forces.")
 
     def getTorsoPosition(self):
-        return self.bodyList[self.torsoIndex].position
+        #Turn the position into a regular tuple
+        position = self.bodyList[self.torsoIndex].position
+        return (position[0], position[1])
 
     def getTorsoAngle(self):
         return self.bodyList[self.torsoIndex].angle
@@ -100,9 +103,10 @@ class Walker:
         for i in range(len(self.bodyList)):
             body = self.bodyList[i]
 
-            adjustedPosition = [self.positionList[i][0] + self.startingXOffset, self.positionList[i][1]]
+            adjustedPosition = [self.positionList[i][0] + self.startingOffset[0], self.positionList[i][1] + self.startingOffset[1]]
 
             body.transform = [adjustedPosition, 0]
             body.linearVelocity = (0, 0)
             body.angularVelocity = 0
+        self.startingPosition = self.getTorsoPosition()
 

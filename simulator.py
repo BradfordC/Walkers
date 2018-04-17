@@ -25,6 +25,7 @@ class Simulator(Framework):
         self.secondsElapsed = 0
         self.groupsElapsed = 0
         self.generationsElapsed = 0
+        self.agentsEvaluated = 0
 
         self.Setup()
 
@@ -35,7 +36,7 @@ class Simulator(Framework):
         #Make some walkers
         self.walkerList = []
         for i in range(learningSettings.groupSize):
-            self.walkerList.append(Walker(self.world, i*10, learningSettings.useSimpleWalkers))
+            self.walkerList.append(Walker(self.world, (i*10, 0), learningSettings.useSimpleWalkers))
 
         #Make a population of agents
         jointCount = len(self.walkerList[0].jointList)
@@ -116,7 +117,7 @@ class Simulator(Framework):
             #If we had extra walkers, don't try to deal with their agents
             if(agent is None):
                 break
-            agent.fitness = self.walkerList[i].getTorsoPosition()[0] - self.walkerList[i].startingXOffset
+            agent.performance.setDisplacement(self.walkerList[i].getTorsoPosition(), self.walkerList[i].startingPosition)
         self.groupsElapsed += 1
         self.secondsElapsed = 0
 
@@ -124,12 +125,14 @@ class Simulator(Framework):
     def afterGeneration(self, settings):
         #Calculate the fitness for everyone
         print(str(self.generationsElapsed) + ": ", end="")
-        self.population.calculateFitness(learningSettings.selectionCriteria)
+        self.population.setNovelty()
+        self.population.printScore(learningSettings.selectionCriteria)
         #Print the average and best positions
         averageAndBestFitness = self.getAverageAndBestFitness()
         averageFitness = averageAndBestFitness[0]
         bestFitness = averageAndBestFitness[1]
-        self.fileHandler.write(str(self.generationsElapsed) + ',' + str(averageFitness) + ',' + str(bestFitness) + '\n')
+        self.agentsEvaluated += self.population.size()
+        self.fileHandler.write(str(self.agentsEvaluated) + ',' + str(averageFitness) + ',' + str(bestFitness) + '\n')
         #Make the next generation
         if(learningSettings.selectionCriteria != selection.SPECIATION):
             self.population = self.population.makeNextPopulation(learningSettings.selectionCriteria)
@@ -172,8 +175,8 @@ class Simulator(Framework):
         fitnessSum = 0
         bestFitness = -90
         for agent in self.population.agentList:
-            fitnessSum += agent.fitness
-            bestFitness = max(bestFitness, agent.fitness)
+            fitnessSum += agent.performance.getFitness()
+            bestFitness = max(bestFitness, agent.performance.getFitness())
         averageFitness = fitnessSum / self.population.size()
         return (averageFitness, bestFitness)
 
