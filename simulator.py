@@ -1,3 +1,4 @@
+import learningSettings
 from framework import (Framework, main)
 from Box2D import *
 from walker import Walker
@@ -39,9 +40,12 @@ class Simulator(Framework):
             self.walkerList.append(Walker(self.world, (i*10, 0), learningSettings.useSimpleWalkers))
 
         #Make a population of agents
-        jointCount = len(self.walkerList[0].jointList)
-        sampleNetwork = Network(jointCount + 2, jointCount, [jointCount])
-        self.population = Population(learningSettings.walkerCount, sampleNetwork)
+        if(learningSettings.loadPopulation):
+            self.population = Population.loadFromFile(learningSettings.populationFile)
+        else:
+            jointCount = len(self.walkerList[0].jointList)
+            sampleNetwork = Network(jointCount + 2, jointCount, [jointCount])
+            self.population = Population(learningSettings.walkerCount, sampleNetwork)
 
         #If we need it, setup an environment for speciation
         if(learningSettings.selectionCriteria == selection.SPECIATION):

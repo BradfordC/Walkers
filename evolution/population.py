@@ -94,6 +94,9 @@ class Population:
             pickle.dump(self.agentList, file, pickle.HIGHEST_PROTOCOL)
 
     #Load agents from a file
-    def loadFromFile(self, fileName):
+    @classmethod
+    def loadFromFile(cls, fileName):
+        loadedPopulation = cls()
         with open(fileName, 'rb') as file:
-            self.agentList = pickle.load(file)
+            loadedPopulation.agentList = pickle.load(file)
+        return loadedPopulation
