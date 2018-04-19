@@ -46,7 +46,7 @@ class Walker:
     def __addBodyPart(self, world, box, position, connectedBodyIndex=-1, jointLimits = (0, 0), jointOffset=(0,0)):
         self.positionList.append(position)
         body = world.CreateDynamicBody(position=position)
-        body.CreatePolygonFixture(box=box, density=1, friction=.9, filter=b2Filter(groupIndex = -1))
+        body.CreatePolygonFixture(box=box, density=5, friction=.9, filter=b2Filter(groupIndex = -1))
         self.bodyList.append(body)
         if(connectedBodyIndex >= 0):
             #Connect the joint at the top middle of this object, plus any offset

@@ -79,7 +79,7 @@ class Simulator(Framework):
 
             network = agent.network
             networkOutput = network.Feedforwad(input)
-            jointForces = [(i - .5)*25 for i in networkOutput]
+            jointForces = [(i - .5)*100 for i in networkOutput]
             walker.setJointForces(jointForces)
 
         #Do this every second
