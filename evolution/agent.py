@@ -20,7 +20,7 @@ class Agent:
             otherLayer = otherAgent.network.Layers[i]
             childLayer = childNetwork.Layers[i]
 
-            Crossover.crossRandomType(thisLayer, otherLayer, childLayer)
+            Crossover.crossUniform(thisLayer, otherLayer, childLayer)
         return Agent(childNetwork)
 
     def mutate(self):
