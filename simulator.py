@@ -126,7 +126,8 @@ class Simulator(Framework):
         #Calculate the fitness for everyone
         self.population.setNovelty()
         #Print the average and best positions
-        averageDistance, bestDistance = self.getAverageAndBestDistance()
+        averageDistance = self.population.getAverageDistance()
+        bestDistance = self.population.getBestDistance()
         self.agentsEvaluated += self.population.size()
         report = str(self.agentsEvaluated) + ',' + str(averageDistance) + ',' + str(bestDistance)
         print(report)
@@ -167,15 +168,6 @@ class Simulator(Framework):
         if(agentIndex >= self.population.size()):
             return None
         return self.population.agentList[agentIndex]
-
-    def getAverageAndBestDistance(self):
-        distanceSum = 0
-        bestDistance = -90
-        for agent in self.population.agentList:
-            distanceSum += agent.performance.getDistanceTravelled()
-            bestDistance = max(bestDistance, agent.performance.getDistanceTravelled())
-        averageDistance = distanceSum / self.population.size()
-        return (averageDistance, bestDistance)
 
     def resetWalkers(self):
         #Reset all walkers

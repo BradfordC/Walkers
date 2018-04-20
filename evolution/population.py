@@ -54,6 +54,19 @@ class Population:
 
         return nextPopulation
 
+    def getBestDistance(self):
+        bestDistance = -9999999
+        for agent in self.agentList:
+            if(bestDistance < agent.performance.getDistanceTravelled()):
+                bestDistance = agent.performance.getDistanceTravelled()
+        return bestDistance
+
+    def getAverageDistance(self):
+        distanceSum = 0
+        for agent in self.agentList:
+            distanceSum += agent.performance.getDistanceTravelled()
+        return distanceSum / self.size()
+
     #Find the highest fitness value in the population
     def getHighestFitness(self):
         highestFitness = -999999999
