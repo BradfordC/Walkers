@@ -11,6 +11,12 @@ class Performance:
         #How well an agent is doing to be chosen for reproduction
         self.score = None
 
+    def addToHistory(self, position):
+        self.history.append(position)
+
+    def addToJointHistory(self, jointAngles):
+        self.jointHistory.append(jointAngles)
+
     def getFitness(self):
         sum = 0
         #Fitness is the sum of height times distance

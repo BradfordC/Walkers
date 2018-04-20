@@ -31,8 +31,9 @@ class Agent:
             layer.Weights[rowIndex] = np.add(layer.Weights[rowIndex],mutationArray)
 
     #Add an array of the current state of the agent
-    def addToHistory(self, stateArray):
-        self.performance.jointHistory.append(stateArray)
+    def addToHistory(self, position, jointAngles):
+        self.performance.addToHistory(position)
+        self.performance.addToJointHistory(jointAngles)
 
     #Remove old history
     def resetHistory(self):

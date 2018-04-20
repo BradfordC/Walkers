@@ -11,7 +11,7 @@ class learningSettings:
     fileName = 'Test'
 
     secondsPerRun = 5
-    walkerCount = 1000
+    walkerCount = 100
     groupSize = 50
     numberOfGenerations = 100
     numberOfExperiments = 1

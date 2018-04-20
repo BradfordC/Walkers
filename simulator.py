@@ -108,20 +108,15 @@ class Simulator(Framework):
         #Add each walker's state to its agent's history
         for i in range(len(self.walkerList)):
             agent = self.findAgentForWalker(i, groupSize)
+            walker = self.walkerList[i]
             #If we had extra walkers, don't try to deal with their agents
             if(agent is None):
                 break
-            agent.addToHistory(self.walkerList[i].getJointAngles())
+            agent.addToHistory(walker.getTorsoPosition(), walker.getJointAngles())
         self.secondsElapsed += 1
 
     #What to do after each group
     def afterGroup(self, settings, groupSize):
-        for i in range(len(self.walkerList)):
-            agent = self.findAgentForWalker(i, groupSize)
-            #If we had extra walkers, don't try to deal with their agents
-            if(agent is None):
-                break
-            agent.performance.history.append(self.walkerList[i].getTorsoPosition())
         self.resetWalkers()
         self.groupsElapsed += 1
         self.secondsElapsed = 0
