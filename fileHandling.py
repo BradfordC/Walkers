@@ -8,7 +8,7 @@ class fileHandler:
     def __init__(self, fileBaseName):
         currentTime = datetime.datetime.now().strftime("%Y-%m-%d--%H-%M-%S")
 
-        self.fileName = fileHandler.resultsDirectory + fileBaseName + '--' + currentTime + '.txt'
+        self.fileName = fileHandler.resultsDirectory + fileBaseName + '--' + currentTime + '.csv'
         self.popSaveName = fileHandler.popDirectory + fileBaseName + '--' + currentTime + '.pop'
 
         self.makeDirs()
