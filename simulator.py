@@ -1,4 +1,3 @@
-import learningSettings
 from framework import (Framework, main)
 from Box2D import *
 from walker import Walker
