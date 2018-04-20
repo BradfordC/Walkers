@@ -42,6 +42,8 @@ class Simulator(Framework):
         #Make a population of agents
         if(learningSettings.loadPopulation):
             self.population = Population.loadFromFile(learningSettings.populationFile)
+            #Reduce the number of agents to the best performing ones
+            self.population.pruneToTopAgents(learningSettings.groupSize)
         else:
             jointCount = len(self.walkerList[0].jointList)
             sampleNetwork = Network(jointCount + 2, jointCount, [jointCount])

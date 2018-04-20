@@ -95,6 +95,11 @@ class Population:
             noveltySum += agent.performance.getNovelty()
         return noveltySum / len(self.agentList)
 
+    #Reduce the population to the best performing agents
+    def pruneToTopAgents(self, agentCount):
+        self.sortByFitness()
+        self.agentList = self.agentList[0:agentCount]
+
     #Try to mutate all agents with a certain chance of mutation
     def mutateAll(self, mutationChance):
         for agent in self.agentList:
