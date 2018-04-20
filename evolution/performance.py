@@ -2,36 +2,34 @@ from evolution import selection
 
 class Performance:
     def __init__(self):
-        #How much an agent moved over the course of the run
-        self.displacement = (0,0)
-        #History of the agent during its generation, used for similarity testing
+        #History of the agent's position over the course of a run
         self.history = []
+        #History of the agent's joints during its generation, used for similarity testing
+        self.jointHistory = []
         #How unique an agent is compared to the rest of a population
         self.novelty = None
         #How well an agent is doing to be chosen for reproduction
         self.score = None
 
-    def setDisplacement(self, startPosition, endPosition):
-        xDif = endPosition[0] - startPosition[0]
-        yDif = endPosition[1] - startPosition[1]
-        self.displacement = (xDif, yDif)
-
     def getFitness(self):
-        #Currently fitness is just X displacement
-        return self.displacement[0]
+        sum = 0
+        #Fitness is the sum of height times distance
+        for position in self.history:
+            sum += position[0] * position[1]
+        return sum
 
-    #Compare the two agents' histories to see how different the two are
-    def getHistoryDistance(self, otherPerformance):
-        if(len(self.history) != len (otherPerformance.history)):
+    #Compare the two agents' joint histories to see how different the two are
+    def getJointHistoryDistance(self, otherPerformance):
+        if(len(self.jointHistory) != len (otherPerformance.jointHistory)):
             print("Error: Histories are not the same size.")
             return None
 
         totalSquaredDifference = 0
 
         #For each state, check the difference between all values
-        for stateIndex in range(len(self.history)):
-            myState = self.history[stateIndex]
-            otherState = otherPerformance.history[stateIndex]
+        for stateIndex in range(len(self.jointHistory)):
+            myState = self.jointHistory[stateIndex]
+            otherState = otherPerformance.jointHistory[stateIndex]
 
             if(len(myState) != len(otherState)):
                 print("Error: States are not the same size.")
@@ -49,7 +47,7 @@ class Performance:
         for otherPerformance in performanceList:
             #Don't check the distance against itself
             if(otherPerformance is not self):
-                totalDistance += self.getHistoryDistance(otherPerformance)
+                totalDistance += self.getJointHistoryDistance(otherPerformance)
         #Don't count itself when finding average
         averageDistance = totalDistance / (len(performanceList) - 1)
         self.noveltyScore = averageDistance

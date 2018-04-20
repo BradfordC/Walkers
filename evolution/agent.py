@@ -32,7 +32,7 @@ class Agent:
 
     #Add an array of the current state of the agent
     def addToHistory(self, stateArray):
-        self.performance.history.append(stateArray)
+        self.performance.jointHistory.append(stateArray)
 
     #Remove old history
     def resetHistory(self):

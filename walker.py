@@ -11,7 +11,6 @@ class Walker:
 
         #Include an offset so that walkers don't overlap, which speeds things up
         self.startingOffset = startingOffset
-        self.startingPosition = None
 
         #Keep track of the torso index, to attach body parts to it and to be able to track its position during the test
         self.torsoIndex = -1
@@ -94,7 +93,7 @@ class Walker:
     def getTorsoPosition(self):
         #Turn the position into a regular tuple
         position = self.bodyList[self.torsoIndex].position
-        return (position[0], position[1])
+        return (position[0] - self.startingOffset[0], position[1] - self.startingOffset[1])
 
     def getTorsoAngle(self):
         return self.bodyList[self.torsoIndex].angle
@@ -108,5 +107,4 @@ class Walker:
             body.transform = [adjustedPosition, 0]
             body.linearVelocity = (0, 0)
             body.angularVelocity = 0
-        self.startingPosition = self.getTorsoPosition()
 

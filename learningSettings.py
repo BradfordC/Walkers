@@ -1,7 +1,7 @@
 from evolution import selection
 
 class learningSettings:
-    useGraphics = False
+    useGraphics = True
     useSimpleWalkers = False
 
     loadPopulation = False

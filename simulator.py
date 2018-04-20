@@ -121,7 +121,7 @@ class Simulator(Framework):
             #If we had extra walkers, don't try to deal with their agents
             if(agent is None):
                 break
-            agent.performance.setDisplacement(self.walkerList[i].getTorsoPosition(), self.walkerList[i].startingPosition)
+            agent.performance.history.append(self.walkerList[i].getTorsoPosition())
         self.groupsElapsed += 1
         self.secondsElapsed = 0
 
