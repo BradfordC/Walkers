@@ -23,9 +23,8 @@ class Performance:
 
     def getFitness(self):
         sum = 0
-        #Fitness is the sum of height times distance
         for position in self.history:
-            sum += position[0] * position[1]
+            sum += position[0] + (position[1] * .5)
         return sum
 
     #Compare the two agents' joint histories to see how different the two are
