@@ -124,15 +124,13 @@ class Simulator(Framework):
     #What to do each generation
     def afterGeneration(self, settings):
         #Calculate the fitness for everyone
-        print(str(self.generationsElapsed) + ": ", end="")
         self.population.setNovelty()
-        self.population.printScore(learningSettings.selectionCriteria)
         #Print the average and best positions
-        averageAndBestFitness = self.getAverageAndBestFitness()
-        averageFitness = averageAndBestFitness[0]
-        bestFitness = averageAndBestFitness[1]
+        averageDistance, bestDistance = self.getAverageAndBestDistance()
         self.agentsEvaluated += self.population.size()
-        self.fileHandler.write(str(self.agentsEvaluated) + ',' + str(averageFitness) + ',' + str(bestFitness) + '\n')
+        report = str(self.agentsEvaluated) + ',' + str(averageDistance) + ',' + str(bestDistance)
+        print(report)
+        self.fileHandler.write(report + '\n')
         #Make the next generation
         if(learningSettings.selectionCriteria != selection.SPECIATION):
             self.population = self.population.makeNextPopulation(learningSettings.selectionCriteria)
@@ -170,14 +168,14 @@ class Simulator(Framework):
             return None
         return self.population.agentList[agentIndex]
 
-    def getAverageAndBestFitness(self):
-        fitnessSum = 0
-        bestFitness = -90
+    def getAverageAndBestDistance(self):
+        distanceSum = 0
+        bestDistance = -90
         for agent in self.population.agentList:
-            fitnessSum += agent.performance.getFitness()
-            bestFitness = max(bestFitness, agent.performance.getFitness())
-        averageFitness = fitnessSum / self.population.size()
-        return (averageFitness, bestFitness)
+            distanceSum += agent.performance.getDistanceTravelled()
+            bestDistance = max(bestDistance, agent.performance.getDistanceTravelled())
+        averageDistance = distanceSum / self.population.size()
+        return (averageDistance, bestDistance)
 
     def resetWalkers(self):
         #Reset all walkers

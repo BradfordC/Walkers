@@ -17,6 +17,10 @@ class Performance:
     def addToJointHistory(self, jointAngles):
         self.jointHistory.append(jointAngles)
 
+    def getDistanceTravelled(self):
+        #Return the X value of the last position
+        return self.history[-1][0]
+
     def getFitness(self):
         sum = 0
         #Fitness is the sum of height times distance
