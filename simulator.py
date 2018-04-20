@@ -122,6 +122,7 @@ class Simulator(Framework):
             if(agent is None):
                 break
             agent.performance.history.append(self.walkerList[i].getTorsoPosition())
+        self.resetWalkers()
         self.groupsElapsed += 1
         self.secondsElapsed = 0
 
@@ -153,7 +154,6 @@ class Simulator(Framework):
                                                  learningSettings.foodCount,
                                                  learningSettings.foodUses,
                                                  learningSettings.foodEnergy)
-        self.resetWalkers()
         self.generationsElapsed += 1
         self.groupsElapsed = 0
 

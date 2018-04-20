@@ -1,7 +1,7 @@
 from evolution import selection
 
 class learningSettings:
-    useGraphics = True
+    useGraphics = False
     useSimpleWalkers = False
 
     loadPopulation = False
@@ -12,7 +12,7 @@ class learningSettings:
 
     secondsPerRun = 5
     walkerCount = 1000
-    groupSize = 25
+    groupSize = 50
     numberOfGenerations = 100
     numberOfExperiments = 1
 
