@@ -30,6 +30,9 @@ class Agent:
             mutationArray = np.random.normal(0,.02,len(layer.Weights[rowIndex]))
             layer.Weights[rowIndex] = np.add(layer.Weights[rowIndex],mutationArray)
 
+    def getPerformanceDistance(self, otherAgent):
+        return self.performance.getJointHistoryDistance(otherAgent.performance)
+
     #Add an array of the current state of the agent
     def addToHistory(self, position, jointAngles):
         self.performance.addToHistory(position)

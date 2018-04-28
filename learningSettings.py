@@ -1,20 +1,20 @@
 from evolution import selection
 
 class learningSettings:
-    useGraphics = True
+    useGraphics = False
     useSimpleWalkers = False
 
-    loadPopulation = True
-    populationFile = "D:/Chris/Dropbox/Dropbox/School/Research/Walkers/results/populations/Test--2018-04-20--16-39-32.pop"
+    loadPopulation = False
+    populationFile = "D:/Chris/Dropbox/Dropbox/School/Research/Walkers/results/populations/Novelty--2018-04-25--18-30-45.pop"
 
     selectionCriteria = selection.OBJECTIVE
-    fileName = 'Test'
+    fileName = 'Objective'
 
-    secondsPerRun = 10
-    walkerCount = 100
-    groupSize = 25
-    numberOfGenerations = 100
-    numberOfExperiments = 1
+    secondsPerRun = 7
+    walkerCount = 1000
+    groupSize = 50
+    numberOfGenerations = 200
+    numberOfExperiments = 3
 
     tournamentSize = 4
 

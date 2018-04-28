@@ -1,11 +1,11 @@
 from evolution import selection
 
 class Performance:
-    def __init__(self):
+    def __init__(self, history = [], jointHistory = []):
         #History of the agent's position over the course of a run
-        self.history = []
+        self.history = history
         #History of the agent's joints during its generation, used for similarity testing
-        self.jointHistory = []
+        self.jointHistory = jointHistory
         #How unique an agent is compared to the rest of a population
         self.novelty = None
         #How well an agent is doing to be chosen for reproduction

@@ -1,4 +1,5 @@
 from evolution import population
+from evolution.performance import Performance
 from learningSettings import learningSettings
 import random
 
@@ -19,14 +20,10 @@ class Environment:
             avgDist = self.tryToFeed(agent)
             sum += avgDist
             maxA = max(maxA, avgDist)
-        print(sum / len(oldPopulation.agentList))
-        print(maxA)
         sum = 0
         for i in range(len(oldPopulation.agentList)):
             for j in range(i + 1, len(oldPopulation.agentList)):
-                sum += 2 * oldPopulation.agentList[i].getHistoryDistance(oldPopulation.agentList[j].history)
-        print((sum / len(oldPopulation.agentList)/len(oldPopulation.agentList)))
-        print()
+                sum += 2 * oldPopulation.agentList[i].getPerformanceDistance(oldPopulation.agentList[j])
         #Migrate any agents that survived
         for agent in oldPopulation.agentList:
             if(agent.energy > 0):
@@ -50,7 +47,7 @@ class Environment:
                         pairIndex = (pairIndex + 1)%popSize
                         continue
                     #Try to mate
-                    if(agent.getHistoryDistance(breedingPopulation.agentList[pairIndex].history) < learningSettings.choosinessLimitMate):
+                    if(agent.getPerformanceDistance(breedingPopulation.agentList[pairIndex]) < learningSettings.choosinessLimitMate):
                         newPopulation.agentList.append(agent.cross(breedingPopulation.agentList[pairIndex]))
                         break
                     #If we've checked all mates, then give up
@@ -77,7 +74,7 @@ class Environment:
             agent.energy = agent.energy - 1
 
         for food in self.foodList:
-            sumDistance += agent.getHistoryDistance(food.history)
+            sumDistance += agent.performance.getJointHistoryDistance(food.performance)
         return sumDistance / len(self.foodList)
 
     #Create a single instance of food
@@ -104,14 +101,14 @@ class Environment:
 
 class Food:
     def __init__(self, history, uses, energy):
-        self.history = history
+        self.performance = Performance(history)
         self.maxUses = uses
         self.remainingUses = uses
         self.energy = energy
 
     #See if the agent is able to eat this food
     def canBeEaten(self, agent):
-        return (self.remainingUses > 0) and (agent.getHistoryDistance(self.history) < learningSettings.choosinessLimitFood)
+        return (self.remainingUses > 0) and (agent.performance.getJointHistoryDistance(self.performance) < learningSettings.choosinessLimitFood)
 
     def refill(self):
         self.remainingUses = self.maxUses
