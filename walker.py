@@ -14,6 +14,7 @@ class Walker:
 
         #Keep track of the torso index, to attach body parts to it and to be able to track its position during the test
         self.torsoIndex = -1
+        self.headIndex = -1
 
         if(isSimple):
             #No head or arms, just the torso
@@ -22,6 +23,7 @@ class Walker:
         else:
             #Head
             self.__addBodyPart(world, (1.0,1.0), (0, 13))
+            self.headIndex = len(self.bodyList) - 1
             #Torso
             self.__addBodyPart(world, (1, 2.5), (0, 9.5), len(self.bodyList) - 1, (-45, 45))
             torsoIndex = len(self.bodyList) - 1
@@ -89,6 +91,13 @@ class Walker:
                 self.jointList[i].motorSpeed = forces[i]
         else:
             print("ERROR: Size mismatch in setting joint forces.")
+
+    def getHeadPosition(self):
+        if(self.headIndex == -1):
+            return self.getTorsoPosition()
+        else:
+            position = self.bodyList[self.headIndex].position
+            return (position[0] - self.startingOffset, position[1] - self.startingOffset[1])
 
     def getTorsoPosition(self):
         #Turn the position into a regular tuple

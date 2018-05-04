@@ -7,8 +7,8 @@ class learningSettings:
     loadPopulation = False
     populationFile = "D:/Chris/Dropbox/Dropbox/School/Research/Walkers/results/populations/Novelty--2018-04-25--18-30-45.pop"
 
-    selectionCriteria = selection.OBJECTIVE
-    fileName = 'Objective'
+    selectionCriteria = selection.NOVELTY
+    fileName = 'Novelty'
 
     secondsPerRun = 7
     walkerCount = 1000
