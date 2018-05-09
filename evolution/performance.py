@@ -30,7 +30,7 @@ class Performance:
     #Compare the two agents' joint histories to see how different the two are
     def getJointHistoryDistance(self, otherPerformance):
         if(len(self.jointHistory) != len (otherPerformance.jointHistory)):
-            print("Error: Histories are not the same size.")
+            print("Error: Histories are not the same size. " + str(len(self.jointHistory)) + " - " + str(len(otherPerformance.jointHistory)))
             return None
 
         totalSquaredDifference = 0
