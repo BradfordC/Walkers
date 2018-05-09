@@ -6,6 +6,7 @@ import random
 class Environment:
     def __init__(self):
         self.foodList = []
+        self.posFoodList = []
 
     #Have all current agents attempt to eat and mate, passing themselves to the next generation as well if they survive
     def generateNextPopulation(self, oldPopulation):
@@ -14,16 +15,8 @@ class Environment:
 
         oldPopulation.sortByFitness()
         #Feed
-        sum = 0
-        maxA = 0
         for agent in oldPopulation.agentList:
-            avgDist = self.tryToFeed(agent)
-            sum += avgDist
-            maxA = max(maxA, avgDist)
-        sum = 0
-        for i in range(len(oldPopulation.agentList)):
-            for j in range(i + 1, len(oldPopulation.agentList)):
-                sum += 2 * oldPopulation.agentList[i].getPerformanceDistance(oldPopulation.agentList[j])
+            self.tryToFeed(agent)
         #Migrate any agents that survived
         for agent in oldPopulation.agentList:
             if(agent.energy > 0):
@@ -65,17 +58,17 @@ class Environment:
     def tryToFeed(self, agent):
         #Look for food that it can eat
         ateFood = False
-        sumDistance = 0
-        for food in self.foodList:
+        for food in self.posFoodList:
             if(agent.eatFood(food)):
                 ateFood = True
                 break
         if(not ateFood):
+            for food in self.foodList:
+                if(agent.eatFood(food)):
+                    ateFood = True
+                    break
+        if(not ateFood):
             agent.energy = agent.energy - 1
-
-        for food in self.foodList:
-            sumDistance += agent.performance.getJointHistoryDistance(food.performance)
-        return sumDistance / len(self.foodList)
 
     #Create a single instance of food
     def generateSingleFood(sampleWalker, arraySize):
@@ -93,15 +86,20 @@ class Environment:
                 foodUses,
                 foodEnergy
             ))
+        self.posFoodList = []
+        for i in range(50):
+            self.posFoodList.append(PosFood(i, i, foodEnergy))
 
     #Refill current food and keep histories
     def refillAllFood(self):
         for food in self.foodList:
             food.refill()
+        for food in self.posFoodList:
+            food.refill()
 
 class Food:
     def __init__(self, history, uses, energy):
-        self.performance = Performance(history)
+        self.performance = Performance([], history)
         self.maxUses = uses
         self.remainingUses = uses
         self.energy = energy
@@ -109,6 +107,22 @@ class Food:
     #See if the agent is able to eat this food
     def canBeEaten(self, agent):
         return (self.remainingUses > 0) and (agent.performance.getJointHistoryDistance(self.performance) < learningSettings.choosinessLimitFood)
+
+    def refill(self):
+        self.remainingUses = self.maxUses
+
+#Food based on position instead of joint history
+class PosFood:
+    def __init__(self, position, uses, energy):
+        self.position = position
+        self.maxUses = uses
+        self.remainingUses = uses
+        self.energy = energy
+
+    #See if the agent is able to eat this food
+    def canBeEaten(self, agent):
+        distance = abs(agent.performance.getDistanceTravelled() - self.position)
+        return (self.remainingUses > 0) and (distance < 1.5)
 
     def refill(self):
         self.remainingUses = self.maxUses

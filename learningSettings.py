@@ -7,11 +7,11 @@ class learningSettings:
     loadPopulation = False
     populationFile = "D:/Chris/Dropbox/Dropbox/School/Research/Walkers/results/populations/Novelty--2018-04-25--18-30-45.pop"
 
-    selectionCriteria = selection.NOVELTY
-    fileName = 'Novelty'
+    selectionCriteria = selection.SPECIATION
+    fileName = 'Test'
 
     secondsPerRun = 7
-    walkerCount = 1000
+    walkerCount = 500
     groupSize = 50
     numberOfGenerations = 200
     numberOfExperiments = 3
@@ -22,13 +22,13 @@ class learningSettings:
     staticFood = False
 
     maxEnergy = 5
-    initialEnergy = 1
+    initialEnergy = 2
 
-    foodCount = 100
+    foodCount = 500
     foodUses = 3
-    foodEnergy = 1
+    foodEnergy = 2
 
     runsBetweenBreeding = 1
 
-    choosinessLimitFood = secondsPerRun * .8
-    choosinessLimitMate = secondsPerRun * .5
+    choosinessLimitFood = secondsPerRun * 1
+    choosinessLimitMate = secondsPerRun * 1
